@@ -39,20 +39,36 @@ export async function code2session(code: string): Promise<any> {
   return (await request('/api/code2session', { code })).data;
 }
 
-export async function get_rsvp(openid: string): Promise<RsvpResponse | undefined> {
+export async function getRsvp(openid: string): Promise<RsvpResponse | undefined> {
   const { data, statusCode } = await request(`/api/rsvp?openid=${openid}`);
   if (statusCode === 404) {
     return undefined;
   }
   if (statusCode !== 200) {
-    throw new Error('get_rsvp failed');
+    throw new Error('getRsvp failed');
   }
   return data as RsvpResponse;
 }
 
-export async function submit_rsvp(openid: string, data: RsvpResponse): Promise<void> {
+export async function submitRsvp(openid: string, data: RsvpResponse): Promise<void> {
   const { statusCode } = await request(`/api/rsvp?openid=${openid}`, { openid, ...data }, 'POST');
   if (statusCode !== 200) {
-    throw new Error('submit_rsvp failed');
+    throw new Error('submitRsvp failed');
   }
+}
+
+export interface GlobalConfig {
+  mainRichContent: string;
+}
+
+export async function getGlobalConfig(): Promise<GlobalConfig> {
+  // TODO
+  const mockConfig: GlobalConfig = {
+    mainRichContent: 'This is the main rich content',
+  };
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(mockConfig);
+    }, 2000);
+  });
 }

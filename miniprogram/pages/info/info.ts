@@ -1,4 +1,4 @@
-import { RsvpResponse, get_rsvp, submit_rsvp } from '../../utils/api';
+import { RsvpResponse, getRsvp, submitRsvp } from '../../utils/api';
 import { AppOption } from '../../utils/app_context';
 
 const app = getApp<AppOption>()
@@ -26,7 +26,7 @@ Page({
     });
     (async () => {
       const openid = await app.context.getOpenidCached();
-      const existingResponse = await get_rsvp(openid);
+      const existingResponse = await getRsvp(openid);
       console.info(`Existing RSVP response: ${JSON.stringify(existingResponse)}`);
       this.setData({
         formData: existingResponse ?? defaultForm,
@@ -56,7 +56,7 @@ Page({
     });
     try {
       const openid = await app.context.getOpenidCached();
-      await submit_rsvp(openid, this.data.formData);
+      await submitRsvp(openid, this.data.formData);
       this.setData({
         submitted: true,
       });

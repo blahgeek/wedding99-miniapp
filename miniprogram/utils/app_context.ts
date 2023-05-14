@@ -1,7 +1,6 @@
-import { GlobalConfig, requestGlobalConfig } from './api/global_config';
-import { code2session } from './api';
+import { code2session, GlobalConfig, getGlobalConfig } from './api';
 
-export { GlobalConfig } from './api/global_config';
+export { GlobalConfig } from './api';
 
 
 const STORAGE_OPENID_KEY = 'openid';
@@ -29,7 +28,7 @@ export default class AppContext {
     if (this.globalConfigPromise !== undefined) {
       return await this.globalConfigPromise;
     }
-    const prom = requestGlobalConfig();
+    const prom = getGlobalConfig();
     this.globalConfigPromise = prom;
     const result = await prom;
     this.globalConfig = result;
