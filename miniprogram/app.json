@@ -1,13 +1,50 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/logs/logs"
+    "pages/main/main",
+    "pages/info/info",
+    "pages/hunt/hunt"
   ],
+  "useExtendedLib": {
+    "weui": true
+  },
+  "usingComponents": {
+    "mp-form-page": "weui-miniprogram/form-page/form-page",
+    "mp-form": "weui-miniprogram/form/form",
+    "mp-cells": "weui-miniprogram/cells/cells",
+    "mp-cell": "weui-miniprogram/cell/cell",
+    "my:location-map": "components/location-map/location-map"
+  },
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "Weixin",
     "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#3cc51f",
+    "borderStyle": "black",
+    "backgroundColor": "#F7F7F7",
+    "list": [
+      {
+        "pagePath": "pages/main/main",
+        "iconPath": "images/tabbar_main.png",
+        "selectedIconPath": "images/tabbar_main_hl.png",
+        "text": "主页"
+      },
+      {
+        "pagePath": "pages/info/info",
+        "iconPath": "images/tabbar_info.png",
+        "selectedIconPath": "images/tabbar_info_hl.png",
+        "text": "RSVP"
+      },
+      {
+        "pagePath": "pages/hunt/hunt",
+        "iconPath": "images/tabbar_hunt.png",
+        "selectedIconPath": "images/tabbar_hunt_hl.png",
+        "text": "寻宝"
+      }
+    ]
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json"

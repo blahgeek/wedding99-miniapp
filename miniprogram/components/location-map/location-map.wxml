@@ -1,0 +1,9 @@
+<view>
+  <map
+      longitude="{{ mapLongitude }}"
+      latitude="{{ mapLatitude }}"
+      markers="{{ mapMarkers }}"
+      bindtap="onTap"
+      >
+  </map>
+</view>

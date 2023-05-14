@@ -1,0 +1,8 @@
+<view class="container">
+  <rich-text nodes="{{ richContent }}"></rich-text>
+  <button type="default">
+    <navigator url="/pages/info/info" open-type="switchTab">
+        RSVP
+    </navigator>
+  </button>
+</view>

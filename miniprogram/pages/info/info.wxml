@@ -1,0 +1,58 @@
+<view class="container">
+
+  <my:location-map></my:location-map>
+
+  <mp-form-page title="Dynamic Title. TODO." subtitle="dynamic subtitle. TODO.">
+    <mp-form id="form" rules="{{formRules}}" models="{{formData}}">
+
+      <mp-cells title="宾客信息">
+        <mp-cell prop="name" title="姓名" ext-class="">
+          <input bindinput="formInputChange" bindconfirm="formInputChange"
+                 data-field="name" class="weui-input" placeholder="请输入姓名"/>
+        </mp-cell>
+        <mp-cell title="是否参加" ext-class="">
+          <switch bindchange="formInputChange"
+                  data-field="participate" slot="footer" checked="{{ formData.participate }}" />
+        </mp-cell>
+        <mp-cell wx:if="{{ formData.participate }}" title="携伴参加" ext-class="">
+          <switch bindchange="formInputChange"
+                  data-field="plusOne" slot="footer" checked="{{ formData.plusOne }}" />
+        </mp-cell>
+      </mp-cells>
+
+      <mp-cells wx:if="{{ formData.participate }}" title="外地宾客" footer="安排住宿 blah blah dynamic TODO">
+        <mp-cell title="需要住宿" ext-class="">
+          <switch bindchange="formInputChange"
+                  data-field="needHotel" slot="footer" checked="{{ formData.needHotel }}" />
+        </mp-cell>
+        <mp-cell wx:if="{{ formData.needHotel }}" prop="date" title="入住日期" ext-class="">
+          <picker data-field="needHotelStartDate" mode="date"
+                  value="{{ formData.needHotelStartDate }}"
+                  start="2023-09-01" end="2023-09-30" bindchange="formInputChange">
+            <view class="weui-input">{{ formData.needHotelStartDate }}</view>
+          </picker>
+        </mp-cell>
+        <mp-cell wx:if="{{ formData.needHotel }}" prop="date" title="退房日期" ext-class="">
+          <picker data-field="needHotelEndDate" mode="date"
+                  value="{{ formData.needHotelEndDate }}"
+                  start="2023-09-01" end="2023-09-30" bindchange="formInputChange">
+            <view class="weui-input">{{ formData.needHotelEndDate }}</view>
+          </picker>
+        </mp-cell>
+      </mp-cells>
+
+      <mp-cells title="备注">
+        <mp-cell has-header="{{false}}" has-footer="{{false}}" title="" ext-class="">
+          <textarea data-field="notes" class="weui-textarea"
+                    placeholder="任何其他想告诉我们的请备注" auto-height
+                    bindconfirm="formInputChange" />
+        </mp-cell>
+      </mp-cells>
+
+    </mp-form>
+    <view slot="button">
+      <button class="weui-btn" type="primary" bindtap="submitForm">提交</button>
+    </view>
+  </mp-form-page>
+
+</view>
