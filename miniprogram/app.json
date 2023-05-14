@@ -2,7 +2,8 @@
   "pages": [
     "pages/main/main",
     "pages/info/info",
-    "pages/hunt/hunt"
+    "pages/hunt/hunt",
+    "pages/hunt/hunt_detail"
   ],
   "useExtendedLib": {
     "weui": true

@@ -1,0 +1,17 @@
+<view class="container">
+  <rich-text nodes="{{ question.questionRichContent }}"></rich-text>
+
+  <view class="weui-cells weui-cells_after-title">
+    <radio-group bindchange="radioChange">
+      <label class="weui-cell weui-check__label" wx:for="{{ question.answers }}">
+        <view class="weui-cell__hd">
+          <radio value="{{ index }}"/>
+        </view>
+        <view class="weui-cell__bd">{{ item }}</view>
+      </label>
+    </radio-group>
+  </view>
+
+  <button bindtap="submit" disabled="{{ answer == -1 }}">提交</button>
+
+</view>

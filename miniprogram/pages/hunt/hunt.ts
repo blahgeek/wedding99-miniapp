@@ -4,6 +4,7 @@ const app = getApp<AppOption>()
 
 
 const STORAGE_HUNT_STATE_KEY = 'hunt_state';
+const QRCODE_PREFIX = 'wedding99:';
 
 interface HuntState {
   name?: string;
@@ -77,12 +78,53 @@ Page({
     });
   },
 
-  scanCode: function() {
-    wx.scanCode({
-      onlyFromCamera: true,
-      success: (res) => {
-        console.log(res);
-      },
+  scanCode: async function() {
+    const scanResult: WechatMiniprogram.ScanCodeSuccessCallbackResult =
+      await new Promise((resolve, reject) => {
+        wx.scanCode({
+          onlyFromCamera: true,
+          success: (res) => {
+            resolve(res);
+          },
+          fail: (err) => {
+            reject(err);
+          },
+        });
+      });
+    const questions = (await app.context.getGlobalConfigCached()).huntQuestions;
+    const questionId = scanResult.result.startsWith(QRCODE_PREFIX) ?
+      scanResult.result.substr(QRCODE_PREFIX.length) : '';
+    if (!(questionId in questions)) {
+      wx.showToast({
+        title: 'invalid code',
+        icon: 'error',
+      });
+      return;
+    }
+
+    if (huntState.foundList.indexOf(questionId) >= 0) {
+      wx.showToast({
+        title: 'already found',
+        icon: 'error',
+      });
+      return;
+    }
+
+    wx.navigateTo({
+      url: `/pages/hunt/hunt_detail?id=${questionId}`,
+      events: {
+        onAnswer: (data: {isCorrect: boolean}) => {
+          console.log(`onAnswer: ${questionId}, ${data.isCorrect}`);
+          if (huntState.foundList.indexOf(questionId) === -1) {
+            huntState.foundList.push(questionId);
+          }
+          if (huntState.correctList.indexOf(questionId) === -1 && data.isCorrect) {
+            huntState.correctList.push(questionId);
+          }
+          this.setData({ huntState });
+          writeHuntStateToStorage(huntState);
+        },
+      }
     });
   },
 })
