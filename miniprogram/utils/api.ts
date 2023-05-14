@@ -57,14 +57,42 @@ export async function submitRsvp(openid: string, data: RsvpResponse): Promise<vo
   }
 }
 
+export interface HuntQuestion {
+  questionRichContent: string;
+  answers: string[];
+  correctAnswer: number;
+  explanation: string;
+}
+
 export interface GlobalConfig {
   mainRichContent: string;
+  huntQuestions: Record<string, HuntQuestion>;
 }
 
 export async function getGlobalConfig(): Promise<GlobalConfig> {
   // TODO
   const mockConfig: GlobalConfig = {
     mainRichContent: 'This is the main rich content',
+    huntQuestions: {
+      'q0': {
+        questionRichContent: 'This is the question rich content 1',
+        answers: ['A', 'B', 'C', 'D'],
+        correctAnswer: 0,
+        explanation: 'explain, answer is A',
+      },
+      'q1': {
+        questionRichContent: 'This is the question rich content 2',
+        answers: ['A', 'B', 'C', 'D'],
+        correctAnswer: 1,
+        explanation: 'explain, answer is B',
+      },
+      'q2': {
+        questionRichContent: 'This is the question rich content 3',
+        answers: ['A', 'B', 'C', 'D'],
+        correctAnswer: 2,
+        explanation: 'explain, answer is C',
+      },
+    },
   };
   return new Promise((resolve) => {
     setTimeout(() => {

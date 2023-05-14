@@ -1,6 +1,30 @@
-<!--logs.wxml-->
-<view class="container log-list">
-  <block wx:for="{{logs}}" wx:key="timeStamp" wx:for-item="log">
-    <text class="log-item">{{index + 1}}. {{log.date}}</text>
-  </block>
+<view class="container">
+  <text>介绍内容和图片 TODO</text>
+
+  <view wx:if="{{ !huntState.name }}">
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__bd">
+          <input class="weui-input"
+                 confirm-type="go"
+                 bindconfirm="submitNameAndStart"
+                 placeholder="请输入姓名后开始寻宝" />
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:else>
+    <button bindtap="userReset">Reset</button>
+
+    <text>
+      一共{{ huntQuestionsCount }}题，
+      已找到{{ huntState.foundList.length }}，
+      正确{{ huntState.correctList.length }}
+    </text>
+    <view>
+      <button type="primary" bindtap="scanCode">扫码</button>
+    </view>
+  </view>
+
 </view>

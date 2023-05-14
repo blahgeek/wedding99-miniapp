@@ -18,7 +18,7 @@
             {{ formData.participate ? (formData.plusOne ? "携伴参加" : "参加") : "无法参加"  }}
           </view>
         </view>
-        <view wx:if="{{ formData.needHotel }}" class="weui-form-preview__item">
+        <view wx:if="{{ formData.participate && formData.needHotel }}" class="weui-form-preview__item">
           <view class="weui-form-preview__label">住宿信息</view>
           <view class="weui-form-preview__value">
             {{ formData.needHotelStartDate }} 至 {{ formData.needHotelEndDate }}
