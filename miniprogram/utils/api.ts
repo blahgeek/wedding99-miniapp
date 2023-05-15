@@ -1,3 +1,4 @@
+import { UiConfig, DEFAULT_UI_CONFIG } from './ui_config';
 
 const API_BASEURL = 'https://wedding.blahgeek.com';
 
@@ -65,38 +66,26 @@ export interface HuntQuestion {
 }
 
 export interface GlobalConfig {
-  mainRichContent: string;
+  uiConfig: UiConfig;
   huntQuestions: Record<string, HuntQuestion>;
 }
 
 export async function getGlobalConfig(): Promise<GlobalConfig> {
-  // TODO
-  const mockConfig: GlobalConfig = {
-    mainRichContent: 'This is the main rich content',
-    huntQuestions: {
-      'q0': {
-        questionRichContent: 'This is the question rich content 1',
-        answers: ['A', 'B', 'C', 'D'],
-        correctAnswer: 0,
-        explanation: 'explain, answer is A',
-      },
-      'q1': {
-        questionRichContent: 'This is the question rich content 2',
-        answers: ['A', 'B', 'C', 'D'],
-        correctAnswer: 1,
-        explanation: 'explain, answer is B',
-      },
-      'q2': {
-        questionRichContent: 'This is the question rich content 3',
-        answers: ['A', 'B', 'C', 'D'],
-        correctAnswer: 2,
-        explanation: 'explain, answer is C',
-      },
-    },
+  const { data, statusCode } = await request('/api/global_config');
+  if (statusCode !== 200) {
+    throw new Error('getGlobalConfig failed');
+  }
+
+  let uiConfig: UiConfig = { ...DEFAULT_UI_CONFIG };
+  for (const key_s in uiConfig) {
+    const key = key_s as (keyof UiConfig);
+    if (key in data.uiConfig && typeof data.uiConfig[key] === typeof uiConfig[key]) {
+      uiConfig[key] = data.uiConfig[key];
+    }
+  }
+
+  return {
+    uiConfig,
+    huntQuestions: data.huntQuestions,
   };
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(mockConfig);
-    }, 2000);
-  });
 }

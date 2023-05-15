@@ -30,7 +30,7 @@ def global_config(_):
     hunt_questions = HuntQuestion.objects.all()
     return JsonResponse({
         '_comment': '是的，这里能看到所有答案，不是服务端校验的，时间紧迫新郎繁忙，就这样吧。',
-        'uiConfigs': dict((c.key, c.value) for c in ui_configs),
+        'uiConfig': dict((c.key, c.value) for c in ui_configs),
         'huntQuestions': dict((q.question_id, {
             'questionRichContent': q.question_rich_content,
             'answers': [q.answer0, q.answer1, q.answer2, q.answer3],

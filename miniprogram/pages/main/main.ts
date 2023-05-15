@@ -1,18 +1,19 @@
 import { AppOption } from '../../utils/app_context';
+import { DEFAULT_UI_CONFIG } from '../../utils/ui_config';
 
 const app = getApp<AppOption>()
 
 Page({
-  data: {},
+  data: {
+    uiConfig: DEFAULT_UI_CONFIG,
+  },
   onLoad() {
     wx.showLoading({
       title: 'Loading...'
     });
     (async () => {
-      const { mainRichContent } = await app.context.getGlobalConfigCached();
-      this.setData({
-        richContent: mainRichContent,
-      });
+      const { uiConfig } = await app.context.getGlobalConfigCached();
+      this.setData({ uiConfig });
       wx.hideLoading();
     })();
   },

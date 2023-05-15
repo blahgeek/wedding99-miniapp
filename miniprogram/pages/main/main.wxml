@@ -1,5 +1,5 @@
 <view class="container">
-  <rich-text nodes="{{ richContent }}"></rich-text>
+  <rich-text nodes="{{ uiConfig.mainRichContent }}"></rich-text>
   <button type="default">
     <navigator url="/pages/info/info" open-type="switchTab">
         RSVP
