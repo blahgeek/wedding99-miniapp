@@ -1,7 +1,7 @@
 {
   "pages": [
     "pages/main/main",
-    "pages/info/info",
+    "pages/rsvp/rsvp",
     "pages/hunt/hunt",
     "pages/hunt/hunt_detail"
   ],
@@ -13,8 +13,7 @@
     "mp-form": "weui-miniprogram/form/form",
     "mp-cells": "weui-miniprogram/cells/cells",
     "mp-cell": "weui-miniprogram/cell/cell",
-    "mp-html": "third_party/mp-html-2.4.2/index",
-    "my:location-map": "components/location-map/location-map"
+    "mp-html": "third_party/mp-html-2.4.2/index"
   },
   "window": {
     "backgroundTextStyle": "light",
@@ -35,7 +34,7 @@
         "text": "主页"
       },
       {
-        "pagePath": "pages/info/info",
+        "pagePath": "pages/rsvp/rsvp",
         "iconPath": "images/tabbar_info.png",
         "selectedIconPath": "images/tabbar_info_hl.png",
         "text": "RSVP"

@@ -2,7 +2,7 @@
   <block wx:if="{{ !uiConfig.mainHtml }}">
     <image src="../../images/main_top.png" mode="widthFix" style="width: 100%"></image>
     <p class="title">赵一开 & 张婷</p>
-    <p class="subtitle">2023.09.09 北京</p>
+    <p class="subtitle">2023.09.09晚 北京</p>
   </block>
   <block wx:else>
     <mp-html content="{{ uiConfig.mainHtml }}"></mp-html>
@@ -10,7 +10,7 @@
 
   <view class="rsvp-container">
     <button type="default">
-      <navigator url="/pages/info/info" open-type="switchTab">
+      <navigator url="/pages/rsvp/rsvp" open-type="switchTab">
         RSVP
       </navigator>
     </button>

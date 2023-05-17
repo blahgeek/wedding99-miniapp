@@ -1,6 +1,9 @@
 import { RsvpResponse, getRsvp, submitRsvp } from '../../utils/api';
 import { AppOption } from '../../utils/app_context';
 
+const MAP_LONGITUDE = 116.479232;
+const MAP_LATITUDE = 39.973909;
+
 const app = getApp<AppOption>()
 
 const defaultForm: RsvpResponse = {
@@ -15,6 +18,17 @@ const defaultForm: RsvpResponse = {
 
 Page({
   data: {
+    uiConfig: {
+      rsvpTitle: "title ...",
+      rsvpSubtitle: "subtitle ...",
+      rsvpHotelNote: "Hotel note...",
+    },
+    mapLongitude: MAP_LONGITUDE,
+    mapLatitude: MAP_LATITUDE,
+    mapMarkers: [{
+      longitude: MAP_LONGITUDE,
+      latitude: MAP_LATITUDE,
+    }],
     formRules: [],
     formData: defaultForm,
     submitted: false,
@@ -72,5 +86,12 @@ Page({
     } finally {
       wx.hideLoading();
     }
+  },
+
+  openMap: function () {
+    wx.openLocation({
+      longitude: MAP_LONGITUDE,
+      latitude: MAP_LATITUDE,
+    });
   },
 })
