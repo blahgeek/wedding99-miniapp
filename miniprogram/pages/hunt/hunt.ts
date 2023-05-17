@@ -37,11 +37,19 @@ Page({
   data: {
     huntQuestionsCount: 0,
     huntState,
+    uiConfig: {
+      huntAlreadyFound: '这个二维码已经扫过了',
+      huntInvalidScan: '这不是你要找的二维码',
+      huntResetConfirm: '确定重新开始吗？',
+      huntNameInputPlaceholder: '请输入姓名后开始',
+      huntScanButton: '扫码',
+    },
   },
   onLoad: async function() {
     wx.showLoading({
       title: 'Loading',
     });
+    this.setData(await app.context.getUiConfigUpdateData('hunt'));
     const globalConfig = await app.context.getGlobalConfigCached();
     huntState.foundList = huntState.foundList.filter((x) => x in globalConfig.huntQuestions);
     huntState.correctList = huntState.correctList.filter((x) => x in globalConfig.huntQuestions);
@@ -66,8 +74,8 @@ Page({
 
   userReset: function() {
     wx.showModal({
-      title: 'confirm',
-      content: 'really reset?',
+      title: '提示',
+      content: this.data.uiConfig.huntResetConfirm,
       success: (res) => {
         if (res.confirm) {
           huntState = { ...DEFAULT_HUNT_STATE };
@@ -96,7 +104,7 @@ Page({
       scanResult.result.substr(QRCODE_PREFIX.length) : '';
     if (!(questionId in questions)) {
       wx.showToast({
-        title: 'invalid code',
+        title: this.data.uiConfig.huntInvalidScan,
         icon: 'error',
       });
       return;
@@ -104,7 +112,7 @@ Page({
 
     if (huntState.foundList.indexOf(questionId) >= 0) {
       wx.showToast({
-        title: 'already found',
+        title: this.data.uiConfig.huntAlreadyFound,
         icon: 'error',
       });
       return;

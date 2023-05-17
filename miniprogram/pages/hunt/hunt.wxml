@@ -1,5 +1,10 @@
 <view class="container">
-  <text>介绍内容和图片 TODO</text>
+  <block wx:if="{{ !uiConfig.huntHtml }}">
+    <p class="title">在婚礼现场找到相应二维码扫描即可答题寻宝</p>
+  </block>
+  <block wx:else>
+    <mp-html content="{{ uiConfig.huntHtml }}"></mp-html>
+  </block>
 
   <view wx:if="{{ !huntState.name }}">
     <view class="weui-cells weui-cells_after-title">
@@ -8,23 +13,18 @@
           <input class="weui-input"
                  confirm-type="go"
                  bindconfirm="submitNameAndStart"
-                 placeholder="请输入姓名后开始寻宝" />
+                 placeholder="{{ uiConfig.huntNameInputPlaceholder }}" />
         </view>
       </view>
     </view>
   </view>
 
   <view wx:else>
-    <button bindtap="userReset">Reset</button>
-
     <text>
-      一共{{ huntQuestionsCount }}题，
-      已找到{{ huntState.foundList.length }}，
-      正确{{ huntState.correctList.length }}
+      一共{{ huntQuestionsCount }}个，已找到{{ huntState.foundList.length }}个，回答正确{{ huntState.correctList.length }}个
     </text>
-    <view>
-      <button type="primary" bindtap="scanCode">扫码</button>
-    </view>
+    <button type="primary" bindtap="scanCode">{{ uiConfig.huntScanButton }}</button>
+    <button bindtap="userReset">重新开始</button>
   </view>
 
 </view>

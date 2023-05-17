@@ -31,7 +31,7 @@ Page({
       questionId: this.data.questionId,
     });
     wx.showModal({
-      title: isCorrect ? 'Correct!' : 'Incorrect',
+      title: isCorrect ? '回答正确' : '回答错误',
       content: question.explanation,
       showCancel: false,
       confirmText: '好',

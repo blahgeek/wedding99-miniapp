@@ -19,8 +19,6 @@ const defaultForm: RsvpResponse = {
 Page({
   data: {
     uiConfig: {
-      rsvpTitle: "title ...",
-      rsvpSubtitle: "subtitle ...",
       rsvpHotelNote: "Hotel note...",
     },
     mapLongitude: MAP_LONGITUDE,
