@@ -20,20 +20,19 @@ Page({
     submitted: false,
   },
 
-  onShow() {
+  onShow: async function() {
     wx.showLoading({
       title: 'Loading',
     });
-    (async () => {
-      const openid = await app.context.getOpenidCached();
-      const existingResponse = await getRsvp(openid);
-      console.info(`Existing RSVP response: ${JSON.stringify(existingResponse)}`);
-      this.setData({
-        formData: existingResponse ?? defaultForm,
-        submitted: existingResponse !== undefined,
-      });
-      wx.hideLoading();
-    })();
+    this.setData(await app.context.getUiConfigUpdateData('rsvp'));
+    const openid = await app.context.getOpenidCached();
+    const existingResponse = await getRsvp(openid);
+    console.info(`Existing RSVP response: ${JSON.stringify(existingResponse)}`);
+    this.setData({
+      formData: existingResponse ?? defaultForm,
+      submitted: existingResponse !== undefined,
+    });
+    wx.hideLoading();
   },
 
   formInputChange: function(e: WechatMiniprogram.Input) {

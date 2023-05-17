@@ -21,8 +21,8 @@ export default class AppContext {
     }
   }
 
-  async getGlobalConfigCached(): Promise<GlobalConfig> {
-    if (this.globalConfig !== undefined) {
+  async getGlobalConfigCached(force_refresh: boolean = false): Promise<GlobalConfig> {
+    if (!force_refresh && this.globalConfig !== undefined) {
       return this.globalConfig;
     }
     if (this.globalConfigPromise !== undefined) {
@@ -33,6 +33,14 @@ export default class AppContext {
     const result = await prom;
     this.globalConfig = result;
     return result;
+  }
+
+  async getUiConfigUpdateData(prefix: string): Promise<Record<string, string>> {
+    const uiConfig = (await this.getGlobalConfigCached()).uiConfig;
+    return Object.fromEntries(
+      Object.entries(uiConfig)
+        .filter(([k, _]) => k.startsWith(prefix))
+        .map(([k, v]) => [`uiConfig.${k}`, v]));
   }
 
   async getOpenidCached(): Promise<string> {

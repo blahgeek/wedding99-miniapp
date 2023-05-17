@@ -1,5 +1,3 @@
-import { UiConfig, DEFAULT_UI_CONFIG } from './ui_config';
-
 const API_BASEURL = 'https://wedding.blahgeek.com';
 
 async function request(path: string, data: any = undefined, method: 'GET' | 'POST' = 'GET'):
@@ -66,7 +64,7 @@ export interface HuntQuestion {
 }
 
 export interface GlobalConfig {
-  uiConfig: UiConfig;
+  uiConfig: Record<string, string>;
   huntQuestions: Record<string, HuntQuestion>;
 }
 
@@ -76,16 +74,8 @@ export async function getGlobalConfig(): Promise<GlobalConfig> {
     throw new Error('getGlobalConfig failed');
   }
 
-  let uiConfig: UiConfig = { ...DEFAULT_UI_CONFIG };
-  for (const key_s in uiConfig) {
-    const key = key_s as (keyof UiConfig);
-    if (key in data.uiConfig && typeof data.uiConfig[key] === typeof uiConfig[key]) {
-      uiConfig[key] = data.uiConfig[key];
-    }
-  }
-
   return {
-    uiConfig,
-    huntQuestions: data.huntQuestions,
+    uiConfig: data.uiConfig || {},
+    huntQuestions: data.huntQuestions || {},
   };
 }
