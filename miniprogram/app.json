@@ -13,6 +13,7 @@
     "mp-form": "weui-miniprogram/form/form",
     "mp-cells": "weui-miniprogram/cells/cells",
     "mp-cell": "weui-miniprogram/cell/cell",
+    "mp-html": "third_party/mp-html-2.4.2/index",
     "my:location-map": "components/location-map/location-map"
   },
   "window": {
