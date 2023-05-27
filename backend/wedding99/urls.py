@@ -24,4 +24,5 @@ urlpatterns = [
     path("api/code2session", api_views.code2session, name="code2session"),
     path("api/global_config", api_views.global_config, name="global_config"),
     path("api/rsvp", api_views.rsvp, name="rsvp"),
+    path("api/hunt_score", api_views.hunt_score, name="hunt_score"),
 ]

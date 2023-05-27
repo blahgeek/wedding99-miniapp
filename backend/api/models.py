@@ -30,3 +30,10 @@ class HuntQuestion(models.Model):
     answer3 = models.CharField(max_length=64)
     correct_answer = models.IntegerField()
     explanation = models.TextField()
+
+
+class HuntScore(models.Model):
+    openid = models.CharField(max_length=128, primary_key=True)
+    name = models.CharField(max_length=64)
+    score = models.IntegerField(default=0)
+

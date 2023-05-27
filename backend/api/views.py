@@ -10,7 +10,7 @@ from wechatpy import WeChatClient
 
 from wedding99.config import WX_APP_API, WX_APP_SECRET
 
-from .models import RsvpResponse, UiConfig, HuntQuestion
+from .models import RsvpResponse, UiConfig, HuntQuestion, HuntScore
 
 
 wechat_client = WeChatClient(WX_APP_API, WX_APP_SECRET)
@@ -55,5 +55,16 @@ def rsvp(req: HttpRequest):
         for k, v in json.loads(req.body).items():
             setattr(model, k, v)
         model.save()
+    return JsonResponse(model_to_dict(model))
+
+
+@csrf_exempt
+@require_http_methods(['POST'])
+def hunt_score(req: HttpRequest):
+    openid = req.GET['openid']
+    model, _ = HuntScore.objects.get_or_create(openid=openid)
+    for k, v in json.loads(req.body).items():
+        setattr(model, k, v)
+    model.save()
     return JsonResponse(model_to_dict(model))
 
