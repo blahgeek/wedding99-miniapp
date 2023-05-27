@@ -44,7 +44,7 @@ export async function getRsvp(openid: string): Promise<RsvpResponse | undefined>
     return undefined;
   }
   if (statusCode !== 200) {
-    throw new Error('getRsvp failed');
+    throw new Error(`getRsvp failed: ${statusCode}`);
   }
   return data as RsvpResponse;
 }
@@ -52,7 +52,7 @@ export async function getRsvp(openid: string): Promise<RsvpResponse | undefined>
 export async function submitRsvp(openid: string, data: RsvpResponse): Promise<void> {
   const { statusCode } = await request(`/api/rsvp?openid=${openid}`, { openid, ...data }, 'POST');
   if (statusCode !== 200) {
-    throw new Error('submitRsvp failed');
+    throw new Error(`submitRsvp failed: ${statusCode}`);
   }
 }
 
@@ -71,11 +71,18 @@ export interface GlobalConfig {
 export async function getGlobalConfig(): Promise<GlobalConfig> {
   const { data, statusCode } = await request('/api/global_config');
   if (statusCode !== 200) {
-    throw new Error('getGlobalConfig failed');
+    throw new Error(`getGlobalConfig failed: ${statusCode}`);
   }
 
   return {
     uiConfig: data.uiConfig || {},
     huntQuestions: data.huntQuestions || {},
   };
+}
+
+export async function submitHuntScore(openid: string, name: string, score: number): Promise<void> {
+  const { statusCode } = await request(`/api/hunt_score?openid=${openid}`, { name, score }, 'POST');
+  if (statusCode !== 200) {
+    throw new Error(`postHuntScore failed: ${statusCode}`);
+  }
 }
