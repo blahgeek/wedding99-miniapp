@@ -7,6 +7,7 @@ name = "pypi"
 django = "*"
 wechatpy = {extras = ["cryptography"], version = "*"}
 uwsgi = "*"
+requests = "*"
 
 [dev-packages]
 

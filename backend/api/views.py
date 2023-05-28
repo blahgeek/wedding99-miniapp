@@ -1,14 +1,16 @@
 import json
 import threading
+import concurrent.futures
 
 from django.http import JsonResponse, HttpResponseNotFound, HttpRequest
 from django.forms.models import model_to_dict
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
+import requests
 from wechatpy import WeChatClient
 
-from wedding99.config import WX_APP_API, WX_APP_SECRET
+from wedding99.config import WX_APP_API, WX_APP_SECRET, TELEGRAM_TOKEN, TELEGRAM_NOTIFICATION_CHAT
 
 from .models import RsvpResponse, UiConfig, HuntQuestion, HuntScore
 
@@ -40,6 +42,27 @@ def global_config(_):
     })
 
 
+_notification_thread_pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+
+def _send_rsvp_notification(response: RsvpResponse):
+    if not TELEGRAM_TOKEN or not TELEGRAM_NOTIFICATION_CHAT:
+        return
+    msg = f'{response.name}提交了回复：'
+    if response.participate:
+        msg += '确认参加; '
+        if response.plusOne:
+            msg += '携伴; '
+        if response.needHotel:
+            msg += f'需要酒店 {response.needHotelStartDate} 至 {response.needHotelEndDate}; '
+    else:
+        msg += '不参加; '
+    if response.notes:
+        msg += f'备注：{response.notes}'
+    requests.post(f'https://tg-api.proxy.wall.blahgeek.com/bot{TELEGRAM_TOKEN}/sendMessage', data={
+        'chat_id': TELEGRAM_NOTIFICATION_CHAT,
+        'text': msg,
+    })
+
 @csrf_exempt
 @require_http_methods(['POST', 'GET'])
 def rsvp(req: HttpRequest):
@@ -55,6 +78,7 @@ def rsvp(req: HttpRequest):
         for k, v in json.loads(req.body).items():
             setattr(model, k, v)
         model.save()
+        _notification_thread_pool.submit(_send_rsvp_notification, model)
     return JsonResponse(model_to_dict(model))
 
 
