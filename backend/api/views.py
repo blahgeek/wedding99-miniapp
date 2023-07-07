@@ -1,5 +1,4 @@
 import json
-import threading
 import concurrent.futures
 
 from django.http import JsonResponse, HttpResponseNotFound, HttpRequest
@@ -8,21 +7,17 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
 import requests
-from wechatpy import WeChatClient
 
-from wedding99.config import WX_APP_API, WX_APP_SECRET, TELEGRAM_TOKEN, TELEGRAM_NOTIFICATION_CHAT
+from wedding99.config import TELEGRAM_TOKEN, TELEGRAM_NOTIFICATION_CHAT
 
+from .wxclient import wechat_client
 from .models import RsvpResponse, UiConfig, HuntQuestion, HuntScore
 
-
-wechat_client = WeChatClient(WX_APP_API, WX_APP_SECRET)
-wechat_client_lock = threading.Lock()
 
 @require_http_methods(['GET'])
 def code2session(req):
     code = req.GET['code']
-    with wechat_client_lock:
-        result = wechat_client.wxa.code_to_session(code)
+    result = wechat_client.wxa.code_to_session(code)
     return JsonResponse(result)
 
 

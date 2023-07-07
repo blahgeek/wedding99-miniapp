@@ -1,5 +1,9 @@
 from django.db import models
 
+class SessionKV(models.Model):
+    key = models.CharField(max_length=64, primary_key=True)
+    value = models.TextField()
+
 # note: camelCase to be consistent with typescript
 
 class RsvpResponse(models.Model):
