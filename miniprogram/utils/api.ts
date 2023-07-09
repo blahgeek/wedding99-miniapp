@@ -1,4 +1,7 @@
+import { getMockGlobalConfig } from './api_mock';
+
 const API_BASEURL = 'https://wedding.blahgeek.com';
+const DEBUG = true;
 
 async function request(path: string, data: any = undefined, method: 'GET' | 'POST' = 'GET'):
 Promise<{ data: any, statusCode: number }> {
@@ -69,6 +72,10 @@ export interface GlobalConfig {
 }
 
 export async function getGlobalConfig(): Promise<GlobalConfig> {
+  if (DEBUG) {
+    return await getMockGlobalConfig();
+  }
+
   const { data, statusCode } = await request('/api/global_config');
   if (statusCode !== 200) {
     throw new Error(`getGlobalConfig failed: ${statusCode}`);
