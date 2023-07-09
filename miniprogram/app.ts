@@ -1,3 +1,5 @@
+import 'miniprogram-api-typings';
+
 import AppContext, { AppOption } from './utils/app_context';
 
 const context = new AppContext();

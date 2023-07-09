@@ -26,7 +26,7 @@
     <button type="primary" bindtap="scanCode">{{ uiConfig.huntScanButton }}</button>
     <view wx:for="{{ huntTasks }}">
       <p>Task {{ item.id }}: {{ huntState.taskStatus[item.id] || 'locked' }}</p>
-      <button bindtap="openTask">{{ uiConfig.huntScanButton }}</button>
+      <button bindtap="openTask">{{ item.id }}</button>
     </view>
     <button bindtap="userReset">重新开始</button>
   </view>

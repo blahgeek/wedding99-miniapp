@@ -1,3 +1,5 @@
+import 'miniprogram-api-typings';
+
 import { GlobalConfig, getGlobalConfig } from './global_config';
 import { request } from './request';
 

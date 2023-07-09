@@ -1,3 +1,5 @@
+import 'miniprogram-api-typings';
+
 const API_BASEURL = 'https://wedding.blahgeek.com';
 
 export async function request(path: string, data: any = undefined, method: 'GET' | 'POST' = 'GET'):

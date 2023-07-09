@@ -1,3 +1,4 @@
+import 'miniprogram-api-typings';
 import { AppOption } from '../../utils/app_context';
 
 const app = getApp<AppOption>()

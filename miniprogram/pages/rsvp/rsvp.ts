@@ -1,3 +1,4 @@
+import 'miniprogram-api-typings';
 import { RsvpResponse, getRsvp, submitRsvp } from './api';
 import { AppOption } from '../../utils/app_context';
 
