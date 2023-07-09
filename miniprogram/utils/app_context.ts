@@ -1,6 +1,7 @@
-import { code2session, GlobalConfig, getGlobalConfig } from './api';
+import { GlobalConfig, getGlobalConfig } from './global_config';
+import { request } from './request';
 
-export { GlobalConfig } from './api';
+export { GlobalConfig } from './global_config';
 
 
 const STORAGE_OPENID_KEY = 'openid';
@@ -8,10 +9,21 @@ const STORAGE_OPENID_KEY = 'openid';
 export default class AppContext {
   private globalConfig: GlobalConfig | undefined;
   private globalConfigPromise: Promise<GlobalConfig> | undefined;
+  readonly vkSession: WechatMiniprogram.VKSession;
 
   private openid: string | undefined;
 
   constructor() {
+    this.vkSession = wx.createVKSession({
+      track: {
+        plane: {  // mandatory, but not used
+          mode: 1,
+        },
+        face: {
+          mode: 2,
+        },
+      }
+    });
     this.openid = wx.getStorageSync<string | undefined>(STORAGE_OPENID_KEY);
     if (this.openid === '') {
       this.openid = undefined;
@@ -59,7 +71,7 @@ export default class AppContext {
       });
     });
 
-    const result = await code2session(code);
+    const result = (await request('/api/code2session', { code })).data;
     const openid = result['openid'];
     if (typeof openid !== 'string') {
       throw new Error(`invalid response: ${JSON.stringify(result)}`);

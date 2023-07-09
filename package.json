@@ -1,15 +1,21 @@
 {
-  "name": "miniprogram-ts-less-quickstart",
+  "name": "wedding99",
   "version": "1.0.0",
   "description": "",
-  "scripts": {
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "",
   "dependencies": {
+    "miniprogram-api-typings": "^3.10.0",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
-    "miniprogram-api-typings": "^2.8.3-1"
+    "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.1.6",
+    "webpack": "^5.88.1",
+    "webpack-cli": "^5.1.4"
   }
 }

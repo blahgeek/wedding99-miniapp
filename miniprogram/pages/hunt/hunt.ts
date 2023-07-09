@@ -1,40 +1,53 @@
+import { z } from 'zod';
+
 import { AppOption } from '../../utils/app_context';
-import { submitHuntScore } from '../../utils/api';
+import { submitHuntScore } from './api';
+import { HuntTask } from './types';
 
 const app = getApp<AppOption>()
 
 
-const STORAGE_HUNT_STATE_KEY = 'hunt_state';
-const STORAGE_HUNT_SCORE_KEY = 'hunt_score';
+const HuntStateSchema = z.object({
+  name: z.string().optional(),
+  // task status only contains unlocked tasks
+  taskStatus: z.record(
+    z.union([z.literal('unlocked'), z.literal('correct'), z.literal('incorrect')])
+  ),
+  submittedScore: z.number().optional(),
+});
+
+type HuntState = z.infer<typeof HuntStateSchema>;
+
+
+const STORAGE_HUNT_STATE_KEY = 'hunt_state_0709';
+// const STORAGE_HUNT_SCORE_KEY = 'hunt_score';
 const STORAGE_HUNT_SUBMITTED_SCORE_KEY = 'hunt_submitted_score';
 const QRCODE_PREFIX = 'wedding99:';
 
-interface HuntState {
-  name?: string;
-  foundList: string[];
-  correctList: string[];
-}
+// interface HuntState {
+//   name?: string;
+//   foundList: string[];
+//   correctList: string[];
+// }
 
 const DEFAULT_HUNT_STATE: HuntState = {
   name: undefined,
-  foundList: [],
-  correctList: [],
+  taskStatus: {},
+  // // default -1, so that we will submit once when started
+  // submittedScore: -1,
 };
 
-function readHuntStateFromStorage() {
+function readHuntStateFromStorage(): HuntState {
   const state = wx.getStorageSync(STORAGE_HUNT_STATE_KEY);
-  if (state) {
-    return JSON.parse(state) as HuntState;
+  try {
+    return HuntStateSchema.parse(JSON.parse(state));
+  } catch (e) {
+    return { ... DEFAULT_HUNT_STATE };
   }
-  return { ...DEFAULT_HUNT_STATE };
 }
 
 function writeHuntStateToStorage(state: HuntState) {
   wx.setStorageSync(STORAGE_HUNT_STATE_KEY, JSON.stringify(state));
-}
-
-function calculateScore(huntState: HuntState): number {
-  return huntState.foundList.length + huntState.correctList.length;
 }
 
 async function submitHuntScoreIfRequired(huntState: HuntState) {
@@ -42,10 +55,7 @@ async function submitHuntScoreIfRequired(huntState: HuntState) {
     return;
   }
 
-  let score = +wx.getStorageSync(STORAGE_HUNT_SCORE_KEY) || 0;
-  score = Math.max(score, calculateScore(huntState));
-  wx.setStorageSync(STORAGE_HUNT_SCORE_KEY, score);
-
+  let score = Object.values(huntState.taskStatus).filter((x) => x === 'correct').length;
   // default -1, so that we will submit once when started
   const submittedScore = +wx.getStorageSync(STORAGE_HUNT_SUBMITTED_SCORE_KEY) || -1;
   if (score <= submittedScore) {
@@ -61,33 +71,40 @@ async function submitHuntScoreIfRequired(huntState: HuntState) {
   }
 }
 
-let huntState = readHuntStateFromStorage();
-
-
 Page({
   data: {
-    huntQuestionsCount: 0,
-    huntState,
+    // huntQuestionsCount: 0,
+    huntTasks: [] as HuntTask[],
+    huntState: DEFAULT_HUNT_STATE,
     uiConfig: {
-      huntAlreadyFound: '这个二维码已经扫过了',
+      huntAlreadyUnlocked: '这个二维码已经扫过了',
       huntInvalidScan: '无效二维码',
       huntResetConfirm: '确定重新开始吗？',
       huntNameInputPlaceholder: '请输入姓名后开始',
       huntScanButton: '扫码',
     },
   },
+
+  modifyHuntState: function(modFn: ((s: HuntState) => HuntState)) {
+    let huntState = readHuntStateFromStorage();
+    huntState = modFn(huntState);
+    writeHuntStateToStorage(huntState);
+    this.setData({
+      huntState,
+    });
+    return huntState;
+  },
+
   onLoad: async function() {
     wx.showLoading({
       title: 'Loading',
     });
     this.setData(await app.context.getUiConfigUpdateData('hunt'));
     const globalConfig = await app.context.getGlobalConfigCached();
-    huntState.foundList = huntState.foundList.filter((x) => x in globalConfig.huntQuestions);
-    huntState.correctList = huntState.correctList.filter((x) => x in globalConfig.huntQuestions);
-    writeHuntStateToStorage(huntState);
-
+    // TODO: adjust taskStatus when globalConfig changes
+    const huntState = readHuntStateFromStorage();
     this.setData({
-      huntQuestionsCount: Object.keys(globalConfig.huntQuestions).length,
+      huntTasks: globalConfig.huntTasks,
       huntState,
     });
 
@@ -99,12 +116,12 @@ Page({
   },
 
   submitNameAndStart: function(e: WechatMiniprogram.Input) {
-    if (e.detail.value.length === 0) {
-      return;
+    if (e.detail.value.length > 0) {
+      this.modifyHuntState((s) => {
+        s.name = e.detail.value;
+        return s;
+      });
     }
-    huntState.name = e.detail.value;
-    this.setData({ huntState });
-    writeHuntStateToStorage(huntState);
   },
 
   userReset: function() {
@@ -113,9 +130,9 @@ Page({
       content: this.data.uiConfig.huntResetConfirm,
       success: (res) => {
         if (res.confirm) {
-          huntState = { ...DEFAULT_HUNT_STATE };
-          this.setData({ huntState });
-          writeHuntStateToStorage(huntState);
+          this.modifyHuntState((_) => {
+            return { ...DEFAULT_HUNT_STATE };
+          });
         }
       },
     });
@@ -134,41 +151,29 @@ Page({
           },
         });
       });
-    const questions = (await app.context.getGlobalConfigCached()).huntQuestions;
-    const questionId = scanResult.result.startsWith(QRCODE_PREFIX) ?
+    const taskId = scanResult.result.startsWith(QRCODE_PREFIX) ?
       scanResult.result.substr(QRCODE_PREFIX.length) : '';
-    if (!(questionId in questions)) {
+    const filteredTasks = this.data.huntTasks.filter(x => x.id === taskId);
+
+    if (filteredTasks.length === 0) {
       wx.showToast({
         title: this.data.uiConfig.huntInvalidScan,
         icon: 'error',
       });
       return;
     }
-
-    if (huntState.foundList.indexOf(questionId) >= 0) {
+    if (this.data.huntState.taskStatus[taskId] !== undefined) {
       wx.showToast({
-        title: this.data.uiConfig.huntAlreadyFound,
+        title: this.data.uiConfig.huntAlreadyUnlocked,
         icon: 'error',
       });
       return;
     }
 
-    wx.navigateTo({
-      url: `/pages/hunt/hunt_detail?id=${questionId}`,
-      events: {
-        onAnswer: (data: {isCorrect: boolean}) => {
-          console.log(`onAnswer: ${questionId}, ${data.isCorrect}`);
-          if (huntState.foundList.indexOf(questionId) === -1) {
-            huntState.foundList.push(questionId);
-          }
-          if (huntState.correctList.indexOf(questionId) === -1 && data.isCorrect) {
-            huntState.correctList.push(questionId);
-          }
-          this.setData({ huntState });
-          writeHuntStateToStorage(huntState);
-          submitHuntScoreIfRequired(huntState);  // no wait
-        },
-      }
+    console.log(`unlock task: ${taskId}`);
+    this.modifyHuntState(s => {
+      s.taskStatus[taskId] = 'unlocked';
+      return s;
     });
   },
 })

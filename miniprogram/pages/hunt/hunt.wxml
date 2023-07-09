@@ -24,6 +24,10 @@
       一共{{ huntQuestionsCount }}个，已找到{{ huntState.foundList.length }}个，回答正确{{ huntState.correctList.length }}个
     </text>
     <button type="primary" bindtap="scanCode">{{ uiConfig.huntScanButton }}</button>
+    <view wx:for="{{ huntTasks }}">
+      <p>Task {{ item.id }}: {{ huntState.taskStatus[item.id] || 'locked' }}</p>
+      <button bindtap="openTask">{{ uiConfig.huntScanButton }}</button>
+    </view>
     <button bindtap="userReset">重新开始</button>
   </view>
 

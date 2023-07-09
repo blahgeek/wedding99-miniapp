@@ -1,4 +1,4 @@
-import { RsvpResponse, getRsvp, submitRsvp } from '../../utils/api';
+import { RsvpResponse, getRsvp, submitRsvp } from './api';
 import { AppOption } from '../../utils/app_context';
 
 const MAP_LONGITUDE = 116.479232;

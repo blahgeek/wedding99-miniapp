@@ -4,13 +4,10 @@
     "ignore": [],
     "include": []
   },
-  "miniprogramRoot": "miniprogram/",
+  "miniprogramRoot": "miniprogram_dist/",
   "compileType": "miniprogram",
-  "projectname": "ts-demo",
+  "projectname": "wedding99",
   "setting": {
-    "useCompilerPlugins": [
-      "typescript"
-    ],
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
@@ -23,7 +20,7 @@
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
   "condition": {},
-  "srcMiniprogramRoot": "miniprogram/",
+  "srcMiniprogramRoot": "miniprogram_dist/",
   "appid": "wxa2d4603fd63d0a10",
   "libVersion": "2.32.0",
   "editorSetting": {
