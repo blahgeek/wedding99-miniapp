@@ -2,7 +2,6 @@ import 'miniprogram-api-typings';
 
 import { QuestionTaskDetail } from './types';
 
-// FIXME: show selected answer when entered again
 Page({
   data: {
     answer: -1,
