@@ -14,28 +14,18 @@ const HuntStateSchema = z.object({
   taskStatus: z.record(
     z.union([z.literal('unlocked'), z.literal('correct'), z.literal('incorrect')])
   ),
-  submittedScore: z.number().optional(),
 });
 
 type HuntState = z.infer<typeof HuntStateSchema>;
 
 
 const STORAGE_HUNT_STATE_KEY = 'hunt_state_0709';
-// const STORAGE_HUNT_SCORE_KEY = 'hunt_score';
 const STORAGE_HUNT_SUBMITTED_SCORE_KEY = 'hunt_submitted_score';
 const QRCODE_PREFIX = 'wedding99:';
-
-// interface HuntState {
-//   name?: string;
-//   foundList: string[];
-//   correctList: string[];
-// }
 
 const DEFAULT_HUNT_STATE: HuntState = {
   name: undefined,
   taskStatus: {},
-  // // default -1, so that we will submit once when started
-  // submittedScore: -1,
 };
 
 function readHuntStateFromStorage(): HuntState {
@@ -83,10 +73,11 @@ Page({
       huntResetConfirm: '确定重新开始吗？',
       huntNameInputPlaceholder: '请输入姓名后开始',
       huntScanButton: '扫码',
+      huntLocked: '未解锁',
     },
   },
 
-  modifyHuntState: function(modFn: ((s: HuntState) => HuntState)) {
+  _modifyHuntState: function(modFn: ((s: HuntState) => HuntState)) {
     let huntState = readHuntStateFromStorage();
     huntState = modFn(huntState);
     writeHuntStateToStorage(huntState);
@@ -94,6 +85,14 @@ Page({
       huntState,
     });
     return huntState;
+  },
+
+  _findTask: function(taskId: string): HuntTask | undefined {
+    const filteredTasks = this.data.huntTasks.filter(x => x.id === taskId);
+    if (filteredTasks.length === 0) {
+      return undefined;
+    }
+    return filteredTasks[0];
   },
 
   onLoad: async function() {
@@ -118,7 +117,7 @@ Page({
 
   submitNameAndStart: function(e: WechatMiniprogram.Input) {
     if (e.detail.value.length > 0) {
-      this.modifyHuntState((s) => {
+      this._modifyHuntState((s) => {
         s.name = e.detail.value;
         return s;
       });
@@ -131,7 +130,7 @@ Page({
       content: this.data.uiConfig.huntResetConfirm,
       success: (res) => {
         if (res.confirm) {
-          this.modifyHuntState((_) => {
+          this._modifyHuntState((_) => {
             return { ...DEFAULT_HUNT_STATE };
           });
         }
@@ -154,9 +153,8 @@ Page({
       });
     const taskId = scanResult.result.startsWith(QRCODE_PREFIX) ?
       scanResult.result.substr(QRCODE_PREFIX.length) : '';
-    const filteredTasks = this.data.huntTasks.filter(x => x.id === taskId);
 
-    if (filteredTasks.length === 0) {
+    if (this._findTask(taskId) === undefined) {
       wx.showToast({
         title: this.data.uiConfig.huntInvalidScan,
         icon: 'error',
@@ -172,9 +170,45 @@ Page({
     }
 
     console.log(`unlock task: ${taskId}`);
-    this.modifyHuntState(s => {
+    this._modifyHuntState(s => {
       s.taskStatus[taskId] = 'unlocked';
       return s;
     });
+  },
+
+  openTask: async function(e: WechatMiniprogram.BaseEvent) {
+    const taskId = e.currentTarget.dataset.id as string;
+    console.log(`opening task ${taskId}`);
+
+    const task = this._findTask(taskId);
+    if (task === undefined) {  // should not happen
+      return;
+    }
+    if (this.data.huntState.taskStatus[taskId] === undefined && task.defaultLocked) {
+      wx.showToast({
+        title: this.data.uiConfig.huntLocked,
+        icon: 'error',
+      });
+      return;
+    }
+
+    const onResult = (data: { isCorrect: boolean }) => {
+      this._modifyHuntState(s => {
+        s.taskStatus[taskId] = data.isCorrect ? 'correct' : 'incorrect';
+        return s;
+      });
+      submitHuntScoreIfRequired(this.data.huntState);
+    };
+
+    if (task.taskDetail.type === 'question') {
+      const question = task.taskDetail;
+      wx.navigateTo({
+        url: '/pages/hunt/question_task',
+        events: { onResult },
+        success: (res) => {
+          res.eventChannel.emit('onLoadTask', {taskId, question});
+        },
+      })
+    }
   },
 })

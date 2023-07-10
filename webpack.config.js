@@ -9,7 +9,7 @@ module.exports = {
         "pages/main/main": "./pages/main/main.ts",
         "pages/rsvp/rsvp": "./pages/rsvp/rsvp.ts",
         "pages/hunt/hunt": "./pages/hunt/hunt.ts",
-        "pages/hunt/hunt_detail": "./pages/hunt/hunt_detail.ts",
+        "pages/hunt/question_task": "./pages/hunt/question_task.ts",
     },
     output: {
         path: resolve("miniprogram_dist"),

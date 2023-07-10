@@ -3,7 +3,7 @@
     "pages/main/main",
     "pages/rsvp/rsvp",
     "pages/hunt/hunt",
-    "pages/hunt/hunt_detail"
+    "pages/hunt/question_task"
   ],
   "useExtendedLib": {
     "weui": true
