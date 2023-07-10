@@ -37,10 +37,6 @@ function readHuntStateFromStorage(): HuntState {
   }
 }
 
-function writeHuntStateToStorage(state: HuntState) {
-  wx.setStorageSync(STORAGE_HUNT_STATE_KEY, JSON.stringify(state));
-}
-
 async function submitHuntScoreIfRequired(huntState: HuntState) {
   if (!huntState.name) {
     return;
@@ -78,9 +74,9 @@ Page({
   },
 
   _modifyHuntState: function(modFn: ((s: HuntState) => HuntState)) {
-    let huntState = readHuntStateFromStorage();
+    let huntState = JSON.parse(JSON.stringify((this.data.huntState))) as HuntState;
     huntState = modFn(huntState);
-    writeHuntStateToStorage(huntState);
+    wx.setStorageSync(STORAGE_HUNT_STATE_KEY, JSON.stringify(huntState));
     this.setData({
       huntState,
     });
