@@ -8,6 +8,7 @@ django = "*"
 wechatpy = {extras = ["cryptography"], version = "*"}
 uwsgi = "*"
 requests = "*"
+qiniu = "*"
 
 [dev-packages]
 
