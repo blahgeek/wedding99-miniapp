@@ -14,6 +14,7 @@ export const PhotoTaskDetailSchema = z.object({
   type: z.literal('photo'),
   descriptionRichContent: z.string(),
   requiredFaceCount: z.number(),
+  requiredUniqueFaceCount: z.number(),
 });
 
 export type PhotoTaskDetail = z.infer<typeof PhotoTaskDetailSchema>;
@@ -25,3 +26,22 @@ export const HuntTaskSchema = z.object({
 });
 
 export type HuntTask = z.infer<typeof HuntTaskSchema>;
+
+
+export const QuestionTaskStateSchema = z.object({
+  type: z.literal('question'),
+});
+
+export type QuestionTaskState = z.infer<typeof QuestionTaskStateSchema>;
+
+export const PhotoTaskStateSchema = z.object({
+  type: z.literal('photo'),
+  url: z.string(),
+  faces: z.array(z.string()),
+});
+
+export type PhotoTaskState = z.infer<typeof PhotoTaskStateSchema>;
+
+export const TaskStateSchema = z.union([QuestionTaskStateSchema, PhotoTaskStateSchema]);
+
+export type TaskState = z.infer<typeof TaskStateSchema>;

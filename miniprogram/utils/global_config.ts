@@ -52,6 +52,17 @@ const MOCK_GLOBAL_CONFIG: GlobalConfig = {
         type: 'photo',
         descriptionRichContent: '<h1>Take a photo</h1>',
         requiredFaceCount: 1,
+        requiredUniqueFaceCount: 1,
+      },
+    },
+    {
+      id: 'q3',
+      defaultLocked: false,
+      taskDetail: {
+        type: 'photo',
+        descriptionRichContent: '<h1>Take a photo with two people</h1>',
+        requiredFaceCount: 2,
+        requiredUniqueFaceCount: 1,
       },
     },
   ],

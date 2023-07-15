@@ -1,6 +1,6 @@
 import 'miniprogram-api-typings';
 
-import { QuestionTaskDetail } from './types';
+import { QuestionTaskDetail, QuestionTaskState } from './types';
 
 Page({
   data: {
@@ -30,8 +30,12 @@ Page({
     const eventChannel = this.getOpenerEventChannel();
     const isCorrect = (this.data.answer === question.correctAnswer);
     console.log(`Answer submitted for question ${this.data.taskId}: correct: ${isCorrect}`);
+    const taskState: QuestionTaskState = {
+      type: 'question',
+    };
     eventChannel.emit('onResult', {
       isCorrect,
+      taskState,
     });
     wx.showModal({
       title: isCorrect ? '回答正确' : '回答错误',

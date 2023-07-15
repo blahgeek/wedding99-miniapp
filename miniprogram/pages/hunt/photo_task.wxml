@@ -1,6 +1,15 @@
 <view class="container">
   <rich-text nodes="{{ photoTask.descriptionRichContent }}"></rich-text>
 
+  <p>other faces: {{ otherFaces }} </p>
+
+  <view wx:if="{{ taskState && taskState.url }}">
+    <image src="{{ taskState.url }}" style="width: 200px; height: 200px" mode="scaleToFit" />
+  </view>
+  <view wx:else >
+    <p>No uploaded url</p>
+  </view>
+
   <button bindtap="takePhoto">Take Photo</button>
 
 </view>

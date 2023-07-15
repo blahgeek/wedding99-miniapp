@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import { AppOption } from '../../utils/app_context';
 import { submitHuntScore } from './api';
-import { HuntTask } from './types';
+import { HuntTask, TaskStateSchema, TaskState } from './types';
 
 const app = getApp<AppOption>()
 
@@ -11,9 +11,12 @@ const app = getApp<AppOption>()
 const HuntStateSchema = z.object({
   name: z.string().optional(),
   // task status only contains unlocked tasks
-  taskStatus: z.record(
-    z.union([z.literal('unlocked'), z.literal('correct'), z.literal('incorrect')])
-  ),
+  taskStatus: z.record(z.union([
+    z.literal('unlocked'),
+    z.literal('correct'),
+    z.literal('incorrect'),
+  ])).catch(() => { return {}; }),
+  taskState: z.record(TaskStateSchema).catch(() => { return {}; }),
 });
 
 type HuntState = z.infer<typeof HuntStateSchema>;
@@ -26,6 +29,7 @@ const QRCODE_PREFIX = 'wedding99:';
 const DEFAULT_HUNT_STATE: HuntState = {
   name: undefined,
   taskStatus: {},
+  taskState: {},
 };
 
 function readHuntStateFromStorage(): HuntState {
@@ -188,9 +192,10 @@ Page({
       return;
     }
 
-    const onResult = (data: { isCorrect: boolean }) => {
+    const onResult = (data: { isCorrect: boolean, taskState: TaskState }) => {
       this._modifyHuntState(s => {
         s.taskStatus[taskId] = data.isCorrect ? 'correct' : 'incorrect';
+        s.taskState[taskId] = data.taskState;
         return s;
       });
       submitHuntScoreIfRequired(this.data.huntState);
@@ -207,11 +212,26 @@ Page({
       });
     } else if (task.taskDetail.type == 'photo') {
       const photoTask = task.taskDetail;
+      const otherFaces =
+        Object.entries(this.data.huntState.taskState)
+          .map(([k, v]) => {
+            if (k !== taskId && v.type === 'photo') {
+              return v.faces;
+            }
+            return [];
+          })
+          .reduce((a, b) => a.concat(b), []);
+
       wx.navigateTo({
         url: '/pages/hunt/photo_task',
         events: { onResult },
         success: (res) => {
-          res.eventChannel.emit('onLoadTask', {taskId, photoTask});
+          res.eventChannel.emit('onLoadTask', {
+            taskId,
+            photoTask,
+            taskState: this.data.huntState.taskState[taskId],
+            otherFaces,
+          });
         },
       });
     }
