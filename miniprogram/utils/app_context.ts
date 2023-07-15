@@ -11,21 +11,10 @@ const STORAGE_OPENID_KEY = 'openid';
 export default class AppContext {
   private globalConfig: GlobalConfig | undefined;
   private globalConfigPromise: Promise<GlobalConfig> | undefined;
-  readonly vkSession: WechatMiniprogram.VKSession;
 
   private openid: string | undefined;
 
   constructor() {
-    this.vkSession = wx.createVKSession({
-      track: {
-        plane: {  // mandatory, but not used
-          mode: 1,
-        },
-        face: {
-          mode: 2,
-        },
-      }
-    });
     this.openid = wx.getStorageSync<string | undefined>(STORAGE_OPENID_KEY);
     if (this.openid === '') {
       this.openid = undefined;

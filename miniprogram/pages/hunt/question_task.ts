@@ -15,7 +15,7 @@ Page({
       (data: {taskId: string, question: QuestionTaskDetail}) => {
         console.log(`Received loadTask event: ${data.taskId}`);
         this.setData(data);
-      })
+      });
   },
 
   radioChange: function(e: WechatMiniprogram.Input) {

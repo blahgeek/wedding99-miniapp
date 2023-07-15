@@ -100,7 +100,6 @@ def hunt_score(req: HttpRequest):
 @csrf_exempt
 @require_http_methods(['POST'])
 def face_upload_and_detect(req: HttpRequest):
-    openid = req.GET['openid']
     image: UploadedFile = req.FILES['image']
     image_content = image.read()
 

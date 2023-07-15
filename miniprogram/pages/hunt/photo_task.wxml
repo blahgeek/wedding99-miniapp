@@ -1,0 +1,6 @@
+<view class="container">
+  <rich-text nodes="{{ photoTask.descriptionRichContent }}"></rich-text>
+
+  <button bindtap="takePhoto">Take Photo</button>
+
+</view>

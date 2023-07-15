@@ -204,7 +204,16 @@ Page({
         success: (res) => {
           res.eventChannel.emit('onLoadTask', {taskId, question});
         },
-      })
+      });
+    } else if (task.taskDetail.type == 'photo') {
+      const photoTask = task.taskDetail;
+      wx.navigateTo({
+        url: '/pages/hunt/photo_task',
+        events: { onResult },
+        success: (res) => {
+          res.eventChannel.emit('onLoadTask', {taskId, photoTask});
+        },
+      });
     }
   },
 })

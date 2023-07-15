@@ -10,6 +10,7 @@ module.exports = {
         "pages/rsvp/rsvp": "./pages/rsvp/rsvp.ts",
         "pages/hunt/hunt": "./pages/hunt/hunt.ts",
         "pages/hunt/question_task": "./pages/hunt/question_task.ts",
+        "pages/hunt/photo_task": "./pages/hunt/photo_task.ts",
     },
     output: {
         path: resolve("miniprogram_dist"),
