@@ -13,11 +13,12 @@ import qiniu
 import requests
 
 from wedding99.config import TELEGRAM_TOKEN, TELEGRAM_NOTIFICATION_CHAT
-from wedding99.config import FACEPP_API_KEY, FACEPP_API_SECRET
+from wedding99.config import FACEPP_FACESET_ID
 from wedding99.config import QINIU_ACCESS_KEY, QINIU_SECRET_KEY, QINIU_BUCKET_NAME, QINIU_PUBLIC_URL
 
 from .wxclient import wechat_client
 from .models import RsvpResponse, UiConfig, HuntQuestion, HuntScore
+from .facepp import facepp_api, FaceppAPIError
 
 
 qiniu_auth = qiniu.Auth(QINIU_ACCESS_KEY, QINIU_SECRET_KEY)
@@ -103,18 +104,7 @@ def face_upload_and_detect(req: HttpRequest):
     image: UploadedFile = req.FILES['image']
     image_content = image.read()
 
-    session = requests.Session()
-    def _facepp_api(url, data):
-        resp = session.post('https://api-cn.faceplusplus.com/facepp' + url,
-                            data={
-                                'api_key': FACEPP_API_KEY,
-                                'api_secret': FACEPP_API_SECRET,
-                                **data,
-                            })
-        resp.raise_for_status()
-        return resp.json()
-
-    detect_resp = _facepp_api('/v3/detect', {
+    detect_resp = facepp_api('/v3/detect', {
         'image_base64': base64.b64encode(image_content),
     })
     if detect_resp['face_num'] == 0:
@@ -125,33 +115,42 @@ def face_upload_and_detect(req: HttpRequest):
     qiniu.put_data(upload_token, upload_key, image_content,
                    mime_type=image.content_type or 'application/octet-stream')
 
-    faceset_id = f'wedding99_user_{openid}'
-    _facepp_api('/v3/faceset/create', {
-        'outer_id': faceset_id,
-        'force_merge': 1,
-    })
-
+    # for each face, search in existing faceset:
+    # if not found, return it and add it to faceset;
+    # if found, return the found face token.
+    # So that, for the same person, we always return an unique id
     result_faces = []
     new_face_tokens = []
     for face in detect_resp['faces']:
-        search_resp = _facepp_api('/v3/search', {
-            'face_token': face['face_token'],
-            'outer_id': faceset_id,
-        })
-        if search_resp['results'] and \
-           search_resp['results'][0]['confidence'] > search_resp['thresholds']['1e-5']:
-            result_faces.append(search_resp['results'][0]['face_token'])
+        face_token = face['face_token']
+        existing_face_token = None
+        try:
+            search_resp = facepp_api('/v3/search', {
+                'face_token': face_token,
+                'outer_id': FACEPP_FACESET_ID,
+            })
+            if search_resp['results'] and \
+               search_resp['results'][0]['confidence'] > search_resp['thresholds']['1e-5']:
+                existing_face_token = search_resp['results'][0]['face_token']
+        except FaceppAPIError as e:
+            if e.error_msg != 'INVALID_OUTER_ID':
+                raise
+
+        if existing_face_token is not None:
+            result_faces.append(existing_face_token)
         else:
-            result_faces.append(face['face_token'])
-            new_face_tokens.append(face['face_token'])
+            result_faces.append(face_token)
+            new_face_tokens.append(face_token)
+
     if new_face_tokens:
-        _facepp_api('/v3/faceset/addface', {
-            'outer_id': faceset_id,
+        facepp_api('/v3/faceset/create', {
+            'outer_id': FACEPP_FACESET_ID,
             'face_tokens': ','.join(new_face_tokens),
+            'force_merge': 1,
         })
 
     return JsonResponse({
-        'faces': result_faces,  # return same id for same face
+        'faces': result_faces,
         'url': QINIU_PUBLIC_URL + '/' + upload_key,
     })
 
