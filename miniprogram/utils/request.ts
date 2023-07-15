@@ -23,4 +23,12 @@ Promise<{ data: any, statusCode: number }> {
       },
     });
   });
-}
+};
+
+export async function returnAfter<T>(value: T, ms: number): Promise<T> {
+  return new Promise<T>((resolve) => {
+    setTimeout(() => {
+      resolve(value);
+    }, ms);
+  });
+};

@@ -2,7 +2,7 @@ import 'miniprogram-api-typings';
 import { z } from 'zod';
 
 import { AppOption } from '../../utils/app_context';
-import { submitHuntScore } from './api';
+import { submitHuntScore, getHuntTasks } from './api';
 import { HuntTask, TaskStateSchema, TaskState } from './types';
 
 const app = getApp<AppOption>()
@@ -100,13 +100,10 @@ Page({
       title: 'Loading',
     });
     this.setData(await app.context.getUiConfigUpdateData('hunt'));
-    const globalConfig = await app.context.getGlobalConfigCached();
-    // TODO: adjust taskStatus when globalConfig changes
+
+    const huntTasks = await getHuntTasks(await app.context.getOpenidCached());
     const huntState = readHuntStateFromStorage();
-    this.setData({
-      huntTasks: globalConfig.huntTasks,
-      huntState,
-    });
+    this.setData({huntTasks, huntState});
 
     wx.hideLoading();
   },

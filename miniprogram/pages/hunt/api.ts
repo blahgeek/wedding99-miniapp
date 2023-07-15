@@ -1,7 +1,8 @@
 import 'miniprogram-api-typings';
 import { z } from 'zod';
 
-import { request, API_BASEURL } from '../../utils/request';
+import { request, returnAfter, API_BASEURL } from '../../utils/request';
+import { HuntTasksSchema, HuntTasks } from './types';
 
 export async function submitHuntScore(openid: string, name: string, score: number): Promise<void> {
   const { statusCode } = await request(`/api/hunt_score?openid=${openid}`, { name, score }, 'POST');
@@ -31,5 +32,66 @@ export async function uploadImageAndDetect(imageFilepath: string): Promise<Uploa
     throw new Error(`uploadImageAndDetect failed: ${response.statusCode}`);
   }
   return UploadAndDetectResultSchema.parse(JSON.parse(response.data));
+};
+
+
+const MOCK_TASKS: HuntTasks = [
+  {
+    id: 'q0',
+    defaultLocked: true,
+    taskDetail: {
+      type: 'question',
+      questionRichContent: '<h1>Question 1</h1>',
+      answers: ['A', 'B', 'C', 'D'],
+      correctAnswer: 0,
+      explanation: 'Explanation 1',
+    }
+  },
+  {
+    id: 'q1',
+    defaultLocked: false,
+    taskDetail: {
+      type: 'question',
+      questionRichContent: '<h1>Question 2</h1>',
+      answers: ['A', 'B', 'C', 'D'],
+      correctAnswer: 1,
+      explanation: 'Explanation 2',
+    }
+  },
+  {
+    id: 'q2',
+    defaultLocked: false,
+    taskDetail: {
+      type: 'photo',
+      descriptionRichContent: '<h1>Take a photo</h1>',
+      requiredFaceCount: 1,
+      requiredUniqueFaceCount: 1,
+    },
+  },
+  {
+    id: 'q3',
+    defaultLocked: false,
+    taskDetail: {
+      type: 'photo',
+      descriptionRichContent: '<h1>Take a photo with two people</h1>',
+      requiredFaceCount: 2,
+      requiredUniqueFaceCount: 1,
+    },
+  },
+];
+
+const USE_MOCK_TASKS = true;
+
+export async function getHuntTasks(openid: string): Promise<HuntTasks> {
+  if (USE_MOCK_TASKS) {
+    return await returnAfter(MOCK_TASKS, 500);
+  }
+
+  const { data, statusCode } = await request(`/api/hunt_tasks?openid=${openid}`);
+  if (statusCode !== 200) {
+    throw new Error(`getHuntTasks failed: ${statusCode}`);
+  }
+  return HuntTasksSchema.parse(data);
 }
+
 

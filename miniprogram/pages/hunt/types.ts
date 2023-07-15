@@ -27,6 +27,9 @@ export const HuntTaskSchema = z.object({
 
 export type HuntTask = z.infer<typeof HuntTaskSchema>;
 
+export const HuntTasksSchema = z.array(HuntTaskSchema);
+export type HuntTasks = z.infer<typeof HuntTasksSchema>;
+
 
 export const QuestionTaskStateSchema = z.object({
   type: z.literal('question'),
