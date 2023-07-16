@@ -106,9 +106,6 @@ def face_upload_and_detect(req: HttpRequest):
     detect_resp = facepp_api('/v3/detect', {
         'image_base64': base64.b64encode(image_content),
     })
-    if detect_resp['face_num'] == 0:
-        return JsonResponse({'face_num': 0})
-
     upload_key = f'user_upload/{uuid.uuid4()}/{image.name}'
     upload_token = qiniu_auth.upload_token(QINIU_BUCKET_NAME, upload_key)
     qiniu.put_data(upload_token, upload_key, image_content,
