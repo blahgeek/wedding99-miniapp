@@ -8,7 +8,8 @@
 }
 
 .task-grid-container {
-    margin-top: 40px;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 .task-name {

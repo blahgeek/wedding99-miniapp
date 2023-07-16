@@ -1,6 +1,11 @@
 <view class="container">
   <block wx:if="{{ !uiConfig.huntHtml }}">
-    <p class="title">在婚礼现场找到相应二维码扫描即可答题寻宝</p>
+    <p>
+      在婚礼现场完成以下任务，完成最多的人有礼物噢！
+    </p>
+    <p>
+      一些任务需要在现场找到相应二维码扫码才能解锁。
+    </p>
   </block>
   <block wx:else>
     <mp-html content="{{ uiConfig.huntHtml }}"></mp-html>

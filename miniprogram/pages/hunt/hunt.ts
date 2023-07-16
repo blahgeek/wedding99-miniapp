@@ -154,7 +154,8 @@ Page({
     const taskId = scanResult.result.startsWith(QRCODE_PREFIX) ?
       scanResult.result.substr(QRCODE_PREFIX.length) : '';
 
-    if (this._findTask(taskId) === undefined) {
+    const task = this._findTask(taskId);
+    if (task === undefined) {
       wx.showToast({
         title: this.data.uiConfig.huntInvalidScan,
         icon: 'error',
@@ -173,6 +174,11 @@ Page({
     this._modifyHuntState(s => {
       s.taskStatus[taskId] = 'unlocked';
       return s;
+    });
+    wx.showModal({
+      title: '扫码成功',
+      content: `任务${task.name || task.id}已解锁`,
+      showCancel: false,
     });
   },
 
