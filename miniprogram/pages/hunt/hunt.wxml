@@ -51,4 +51,8 @@
     </view>
   </view>
 
+  <view class="weui-footer weui-footer_fixed-bottom">
+    <view class="weui-footer__text">Copyright © 新娘设计♥新郎开发</view>
+  </view>
+
 </view>
