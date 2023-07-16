@@ -11,14 +11,12 @@
   <view class="weui-cells weui-cells_after-title">
     <radio-group bindchange="radioChange">
       <block wx:for="{{ question.answers }}">
-        <block wx:if="{{ !(adAlreadyPlayed && m.shouldRemoveAnswer(index, question)) }}">
-          <label class="weui-cell weui-check__label">
-            <view class="weui-cell__hd">
-              <radio value="{{ index }}"/>
-            </view>
-            <view class="weui-cell__bd">{{ item }}</view>
-          </label>
-        </block>
+        <label class="weui-cell weui-check__label">
+          <view class="weui-cell__hd">
+            <radio value="{{ index }}" disabled="{{ adAlreadyPlayed && m.shouldRemoveAnswer(index, question) }}"/>
+          </view>
+          <view class="weui-cell__bd">{{ item }}</view>
+        </label>
       </block>
     </radio-group>
   </view>
