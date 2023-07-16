@@ -20,7 +20,7 @@ const defaultForm: RsvpResponse = {
 Page({
   data: {
     uiConfig: {
-      rsvpHotelNote: "Hotel note...",
+      rsvpHotelNote: "我们可以帮您安排酒店",
     },
     mapLongitude: MAP_LONGITUDE,
     mapLatitude: MAP_LATITUDE,

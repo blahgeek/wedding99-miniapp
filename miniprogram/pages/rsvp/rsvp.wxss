@@ -16,3 +16,15 @@
     display: block;
     margin-left: 16px;
 }
+
+input {
+    text-align: right;
+}
+
+picker .weui-input {
+    text-align: right;
+}
+
+mp-cells > .weui-cells__group {
+    margin-bottom: 40px;
+}
