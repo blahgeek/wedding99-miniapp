@@ -41,27 +41,6 @@ function readHuntStateFromStorage(): HuntState {
   }
 }
 
-async function submitHuntScoreIfRequired(huntState: HuntState) {
-  if (!huntState.name) {
-    return;
-  }
-
-  let score = Object.values(huntState.taskStatus).filter((x) => x === 'correct').length;
-  // default -1, so that we will submit once when started
-  const submittedScore = +wx.getStorageSync(STORAGE_HUNT_SUBMITTED_SCORE_KEY) || -1;
-  if (score <= submittedScore) {
-    return;
-  }
-
-  try {
-    const openid = await app.context.getOpenidCached();
-    await submitHuntScore(openid, huntState.name, score);
-    wx.setStorageSync(STORAGE_HUNT_SUBMITTED_SCORE_KEY, score);
-  } catch (err) {
-    console.error(`Failed to submit hunt score: ${err}`);
-  }
-}
-
 Page({
   data: {
     // huntQuestionsCount: 0,
@@ -76,6 +55,30 @@ Page({
       huntLocked: '未解锁',
     },
   },
+
+  _submitHuntScoreIfRequired: async function() {
+    const huntState = this.data.huntState;
+    if (!huntState.name) {
+      return;
+    }
+
+    let score = this.data.huntTasks.filter(t => huntState.taskStatus[t.id] === 'correct').length;
+    console.log(`New score: ${score}`);
+    // default -1, so that we will submit once when started
+    const submittedScore = +wx.getStorageSync(STORAGE_HUNT_SUBMITTED_SCORE_KEY) || -1;
+    if (score <= submittedScore) {
+      return;
+    }
+
+    try {
+      const openid = await app.context.getOpenidCached();
+      await submitHuntScore(openid, huntState.name, score);
+      wx.setStorageSync(STORAGE_HUNT_SUBMITTED_SCORE_KEY, score);
+    } catch (err) {
+      console.error(`Failed to submit hunt score: ${err}`);
+    }
+  },
+
 
   _modifyHuntState: function(modFn: ((s: HuntState) => HuntState)) {
     let huntState = JSON.parse(JSON.stringify((this.data.huntState))) as HuntState;
@@ -109,7 +112,7 @@ Page({
   },
 
   onShow: function() {
-    submitHuntScoreIfRequired(this.data.huntState);  // submit if not up-to-date, no wait
+    this._submitHuntScoreIfRequired();  // submit if not up-to-date, no wait
   },
 
   submitNameAndStart: function(e: WechatMiniprogram.Input) {
@@ -195,7 +198,7 @@ Page({
         s.taskState[taskId] = data.taskState;
         return s;
       });
-      submitHuntScoreIfRequired(this.data.huntState);
+      this._submitHuntScoreIfRequired();
     };
 
     if (task.taskDetail.type === 'question') {

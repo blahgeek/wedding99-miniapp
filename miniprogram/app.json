@@ -15,6 +15,12 @@
     "mp-form": "weui-miniprogram/form/form",
     "mp-cells": "weui-miniprogram/cells/cells",
     "mp-cell": "weui-miniprogram/cell/cell",
+    "mp-icon": "weui-miniprogram/icon/icon",
+
+    "l-icon": "third_party/lin-ui-0.9.13/icon/index",
+    "l-grid": "third_party/lin-ui-0.9.13/grid/index",
+    "l-grid-item": "third_party/lin-ui-0.9.13/grid-item/index",
+
     "mp-html": "third_party/mp-html-2.4.2/index"
   },
   "window": {

@@ -6,3 +6,11 @@
 .container button {
     margin: 10px auto;
 }
+
+.task-grid-container {
+    margin-top: 40px;
+}
+
+.task-name {
+    font-size: 14px;
+}

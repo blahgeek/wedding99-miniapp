@@ -22,6 +22,7 @@ export type PhotoTaskDetail = z.infer<typeof PhotoTaskDetailSchema>;
 
 export const HuntTaskSchema = z.object({
   id: z.string(),
+  name: z.string().optional(),
   defaultLocked: z.boolean(),
   taskDetail: z.union([QuestionTaskDetailSchema, PhotoTaskDetailSchema]),
 });

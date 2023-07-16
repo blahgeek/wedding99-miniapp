@@ -21,11 +21,34 @@
 
   <view wx:else>
     <button type="primary" bindtap="scanCode">{{ uiConfig.huntScanButton }}</button>
-    <view wx:for="{{ huntTasks }}" wx:key="id">
-      <p>Task {{ item.id }}: {{ huntState.taskStatus[item.id] || (item.defaultLocked ? "locked" : "open") }}</p>
-      <button data-id="{{ item.id }}" bindtap="openTask">{{ item.id }}</button>
-    </view>
     <button bindtap="userReset">重新开始</button>
+
+    <view class="task-grid-container">
+    <l-grid show-border="{{ true }}">
+      <block wx:for="{{ huntTasks }}" wx:key="id">
+        <l-grid-item data-id="{{ item.id }}" key="{{ item.id }}" slot="{{ item.id }}"
+                     bind:linitemtap="openTask">
+          <block wx:if="{{ huntState.taskStatus[item.id] }}">
+            <mp-icon wx:if="{{ huntState.taskStatus[item.id] === 'correct' }}"
+                     size="{{ 30 }}" icon="done2" color="green" />
+            <mp-icon wx:if="{{ huntState.taskStatus[item.id] === 'incorrect' }}"
+                     size="{{ 30 }}" icon="close" color="red" />
+            <mp-icon wx:if="{{ huntState.taskStatus[item.id] === 'unlocked' }}"
+                     size="{{ 30 }}" icon="help" />
+          </block>
+          <block wx:else>
+            <mp-icon wx:if="{{ item.defaultLocked }}"
+                     size="{{ 30 }}" icon="lock" />
+            <mp-icon wx:else
+                     size="{{ 30 }}" icon="help" />
+          </block>
+          <view class="task-name">
+            {{ item.name || item.id }}
+          </view>
+        </l-grid-item>
+      </block>
+    </l-grid>
+    </view>
   </view>
 
 </view>

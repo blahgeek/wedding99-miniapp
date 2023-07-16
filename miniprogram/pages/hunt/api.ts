@@ -72,6 +72,7 @@ const MOCK_TASKS: HuntTasks = [
   },
   {
     id: 'q3',
+    name: '合照2',
     defaultLocked: false,
     taskDetail: {
       type: 'photo',
