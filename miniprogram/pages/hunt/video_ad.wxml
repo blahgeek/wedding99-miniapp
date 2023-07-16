@@ -1,0 +1,10 @@
+<video src="{{ uiConfig.videoAdSrc }}"
+       controls="{{true}}"
+       autoplay="{{true}}"
+       show-progress="{{false}}"
+       show-play-btn="{{true}}"
+       show-center-play-btn="{{true}}"
+       show-bottom-progress="{{false}}"
+       enable-progress-gesture="{{false}}"
+       bindended="onVideoEnded"
+       />

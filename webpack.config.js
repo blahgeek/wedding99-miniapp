@@ -11,6 +11,7 @@ module.exports = {
         "pages/hunt/hunt": "./pages/hunt/hunt.ts",
         "pages/hunt/question_task": "./pages/hunt/question_task.ts",
         "pages/hunt/photo_task": "./pages/hunt/photo_task.ts",
+        "pages/hunt/video_ad": "./pages/hunt/video_ad.ts",
     },
     output: {
         path: resolve("miniprogram_dist"),

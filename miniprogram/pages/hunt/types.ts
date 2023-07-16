@@ -6,6 +6,7 @@ export const QuestionTaskDetailSchema = z.object({
   answers: z.array(z.string()),
   correctAnswer: z.number(),
   explanation: z.string(),
+  removeAnswersAfterAd: z.array(z.number()).catch(() => []),
 });
 
 export type QuestionTaskDetail = z.infer<typeof QuestionTaskDetailSchema>;

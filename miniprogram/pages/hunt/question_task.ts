@@ -1,15 +1,23 @@
 import 'miniprogram-api-typings';
 
+import { AppOption } from '../../utils/app_context';
 import { QuestionTaskDetail, QuestionTaskState } from './types';
+
+const app = getApp<AppOption>()
 
 Page({
   data: {
     answer: -1,
     taskId: '',
     question: undefined as (QuestionTaskDetail | undefined),
+    adAlreadyPlayed: false,
+    uiConfig: {
+      questionPlayAdButton: '播放视频去掉错误答案',
+    },
   },
 
-  onLoad: function() {
+  onLoad: async function() {
+    this.setData(await app.context.getUiConfigUpdateData('question'));
     const eventChannel = this.getOpenerEventChannel();
     eventChannel.on('onLoadTask',
       (data: {taskId: string, question: QuestionTaskDetail}) => {
@@ -47,4 +55,22 @@ Page({
       },
     });
   },
+
+  playAd: function() {
+    const question = this.data.question;
+    if (question === undefined || question.removeAnswersAfterAd.length === 0 || this.data.adAlreadyPlayed) {
+      return;
+    }
+
+    wx.navigateTo({
+      url: '/pages/hunt/video_ad',
+      events: {
+        onAdComplete: () => {
+          console.log('Ad complete');
+          this.setData({ adAlreadyPlayed: true });
+        },
+      },
+    });
+  },
+
 })

@@ -45,6 +45,7 @@ const MOCK_TASKS: HuntTasks = [
       answers: ['A', 'B', 'C', 'D'],
       correctAnswer: 0,
       explanation: 'Explanation 1',
+      removeAnswersAfterAd: [],
     }
   },
   {
@@ -56,6 +57,7 @@ const MOCK_TASKS: HuntTasks = [
       answers: ['A', 'B', 'C', 'D'],
       correctAnswer: 1,
       explanation: 'Explanation 2',
+      removeAnswersAfterAd: [2, 3],
     }
   },
   {

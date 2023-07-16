@@ -4,7 +4,8 @@
     "pages/rsvp/rsvp",
     "pages/hunt/hunt",
     "pages/hunt/question_task",
-    "pages/hunt/photo_task"
+    "pages/hunt/photo_task",
+    "pages/hunt/video_ad"
   ],
   "useExtendedLib": {
     "weui": true
