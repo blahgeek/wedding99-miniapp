@@ -49,9 +49,9 @@
       },
       {
         "pagePath": "pages/hunt/hunt",
-        "iconPath": "images/tabbar_hunt.png",
-        "selectedIconPath": "images/tabbar_hunt_hl.png",
-        "text": "寻宝"
+        "iconPath": "images/tabbar_task.png",
+        "selectedIconPath": "images/tabbar_task_hl.png",
+        "text": "任务"
       }
     ]
   },
