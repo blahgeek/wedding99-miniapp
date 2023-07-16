@@ -66,6 +66,7 @@ const MOCK_TASKS: HuntTasks = [
     taskDetail: {
       type: 'photo',
       descriptionRichContent: '<h1>Take a photo</h1>',
+      successExplanation: 'success explanation',
       requiredFaceCount: 1,
       requiredUniqueFaceCount: 1,
     },
@@ -77,6 +78,7 @@ const MOCK_TASKS: HuntTasks = [
     taskDetail: {
       type: 'photo',
       descriptionRichContent: '<h1>Take a photo with two people</h1>',
+      successExplanation: 'success explanation 2',
       requiredFaceCount: 2,
       requiredUniqueFaceCount: 1,
     },

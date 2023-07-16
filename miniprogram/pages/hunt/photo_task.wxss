@@ -1,0 +1,7 @@
+.container {
+    margin: 15px 10px;
+}
+
+.container button {
+    margin: 15px auto;
+}

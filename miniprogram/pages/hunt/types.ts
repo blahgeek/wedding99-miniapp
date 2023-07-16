@@ -14,6 +14,7 @@ export type QuestionTaskDetail = z.infer<typeof QuestionTaskDetailSchema>;
 export const PhotoTaskDetailSchema = z.object({
   type: z.literal('photo'),
   descriptionRichContent: z.string(),
+  successExplanation: z.string(),
   requiredFaceCount: z.number(),
   requiredUniqueFaceCount: z.number(),
 });

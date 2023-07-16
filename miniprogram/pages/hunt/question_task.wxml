@@ -21,7 +21,7 @@
     </radio-group>
   </view>
 
-  <button bindtap="submit" disabled="{{ answer == -1 }}">提交</button>
+  <button type="primary" bindtap="submit" disabled="{{ answer == -1 }}">提交</button>
   <view wx:if="{{ question && question.removeAnswersAfterAd.length > 0 }}">
     <button bindtap="playAd" disabled="{{ adAlreadyPlayed }}">{{ uiConfig.questionPlayAdButton }}</button>
   </view>

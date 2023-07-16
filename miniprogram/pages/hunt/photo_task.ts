@@ -11,8 +11,6 @@ Page({
     otherFaces: [] as string[],
   },
 
-  _vkSession: undefined as (WechatMiniprogram.VKSession | undefined),
-
   onLoad: function() {
     const eventChannel = this.getOpenerEventChannel();
     eventChannel.on('onLoadTask',
@@ -23,7 +21,8 @@ Page({
   },
 
   takePhoto: async function() {
-    if (this.data.photoTask === undefined) {
+    const photoTask = this.data.photoTask;
+    if (photoTask === undefined) {
       return;
     }
 
@@ -70,17 +69,23 @@ Page({
     this.setData({ taskState: newState });
 
     const uniqueFaceCount = result.faces.filter(x => this.data.otherFaces.indexOf(x) < 0).length;
-    const isCorrect =
-        uniqueFaceCount >= this.data.photoTask.requiredUniqueFaceCount &&
-        result.faces.length >= this.data.photoTask.requiredFaceCount;
+    let isCorrect = true;
+    let msg = photoTask.successExplanation;
+    if (result.faces.length < photoTask.requiredFaceCount) {
+      isCorrect = false;
+      msg = `只检测到${result.faces.length}张人脸`;
+    } else if (uniqueFaceCount < photoTask.requiredUniqueFaceCount) {
+      isCorrect = false;
+      msg = `你已经和TA拍过照片了`;
+    }
+
     this.getOpenerEventChannel().emit('onResult', {
       isCorrect,
       taskState: newState,
     });
-
     wx.showModal({
-      title: isCorrect ? '回答正确' : '回答错误',
-      content: `face count: ${result.faces.length}, unique face count: ${uniqueFaceCount}`,
+      title: isCorrect ? '通过' : '不通过',
+      content: msg,
       showCancel: false,
       confirmText: '好',
       complete: () => {
