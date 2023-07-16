@@ -33,7 +33,7 @@ Page({
     submitted: false,
   },
 
-  onShow: async function() {
+  _refreshPage: async function() {
     wx.showLoading({
       title: 'Loading',
     });
@@ -46,6 +46,15 @@ Page({
       submitted: existingResponse !== undefined,
     });
     wx.hideLoading();
+  },
+
+  onLoad: async function() {
+    await this._refreshPage();
+  },
+
+  onPullDownRefresh: async function() {
+    await this._refreshPage();
+    wx.stopPullDownRefresh();
   },
 
   formInputChange: function(e: WechatMiniprogram.Input) {

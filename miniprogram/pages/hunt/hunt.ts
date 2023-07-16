@@ -98,7 +98,7 @@ Page({
     return filteredTasks[0];
   },
 
-  onLoad: async function() {
+  _refreshPage: async function() {
     wx.showLoading({
       title: 'Loading',
     });
@@ -109,6 +109,15 @@ Page({
     this.setData({huntTasks, huntState});
 
     wx.hideLoading();
+  },
+
+  onLoad: async function() {
+    await this._refreshPage();
+  },
+
+  onPullDownRefresh: async function() {
+    await this._refreshPage();
+    wx.stopPullDownRefresh();
   },
 
   onShow: function() {
