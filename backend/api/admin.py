@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import RsvpResponse, UiConfig, HuntQuestion, HuntScore
+from .models import RsvpResponse, UiConfig, HuntScore
 
 
 class HuntScoreAdmin(admin.ModelAdmin):
@@ -10,5 +10,4 @@ class HuntScoreAdmin(admin.ModelAdmin):
 
 admin.site.register(RsvpResponse)
 admin.site.register(UiConfig)
-admin.site.register(HuntQuestion)
 admin.site.register(HuntScore, HuntScoreAdmin)

@@ -17,7 +17,7 @@ from wedding99.config import FACEPP_FACESET_ID
 from wedding99.config import QINIU_ACCESS_KEY, QINIU_SECRET_KEY, QINIU_BUCKET_NAME, QINIU_PUBLIC_URL
 
 from .wxclient import wechat_client
-from .models import RsvpResponse, UiConfig, HuntQuestion, HuntScore
+from .models import RsvpResponse, UiConfig, HuntScore
 from .facepp import facepp_api, FaceppAPIError
 
 
@@ -33,16 +33,9 @@ def code2session(req):
 @require_http_methods(['GET'])
 def global_config(_):
     ui_configs = UiConfig.objects.all()
-    hunt_questions = HuntQuestion.objects.all()
     return JsonResponse({
         '_comment': '是的，这里能看到所有答案，不是服务端校验的，时间紧迫新郎繁忙，就这样吧。',
         'uiConfig': dict((c.key, c.value) for c in ui_configs),
-        'huntQuestions': dict((q.question_id, {
-            'questionRichContent': q.question_rich_content,
-            'answers': [q.answer0, q.answer1, q.answer2, q.answer3],
-            'correctAnswer': q.correct_answer,
-            'explanation': q.explanation,
-        }) for q in hunt_questions),
     })
 
 

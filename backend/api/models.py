@@ -25,17 +25,6 @@ class UiConfig(models.Model):
     value = models.TextField()
 
 
-class HuntQuestion(models.Model):
-    question_id = models.CharField(max_length=64, primary_key=True)
-    question_rich_content = models.TextField()
-    answer0 = models.CharField(max_length=64)
-    answer1 = models.CharField(max_length=64)
-    answer2 = models.CharField(max_length=64)
-    answer3 = models.CharField(max_length=64)
-    correct_answer = models.IntegerField()
-    explanation = models.TextField()
-
-
 class HuntScore(models.Model):
     openid = models.CharField(max_length=128, primary_key=True)
     name = models.CharField(max_length=64)
