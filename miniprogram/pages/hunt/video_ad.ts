@@ -16,8 +16,13 @@ Page({
     wx.showModal({
       title: this.data.uiConfig.videoAdCompleteTitle,
       content: this.data.uiConfig.videoAdCompleteMessage,
-      showCancel: false,
-      complete: () => wx.navigateBack(),
+      cancelText: '好',
+      confirmText: '返回',
+      success: (res: WechatMiniprogram.ShowModalSuccessCallbackResult) => {
+        if (res.confirm) {
+          wx.navigateBack();
+        }
+      },
     });
   },
 })

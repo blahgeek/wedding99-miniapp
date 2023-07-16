@@ -5,6 +5,7 @@
        show-play-btn="{{true}}"
        show-center-play-btn="{{true}}"
        show-bottom-progress="{{false}}"
+       show-fullscreen-btn="{{false}}"
        enable-progress-gesture="{{false}}"
        bindended="onVideoEnded"
        />
