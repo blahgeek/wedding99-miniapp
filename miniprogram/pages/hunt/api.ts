@@ -85,7 +85,7 @@ const MOCK_TASKS: HuntTasks = [
   },
 ];
 
-const USE_MOCK_TASKS = true;
+const USE_MOCK_TASKS = false;
 
 export async function getHuntTasks(openid: string): Promise<HuntTasks> {
   if (USE_MOCK_TASKS) {

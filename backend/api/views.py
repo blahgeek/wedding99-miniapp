@@ -1,4 +1,5 @@
 import base64
+import dataclasses
 import uuid
 import json
 import concurrent.futures
@@ -19,6 +20,7 @@ from wedding99.config import QINIU_ACCESS_KEY, QINIU_SECRET_KEY, QINIU_BUCKET_NA
 from .wxclient import wechat_client
 from .models import RsvpResponse, UiConfig, HuntScore
 from .facepp import facepp_api, FaceppAPIError
+from .hunt_tasks import ALL_TASKS
 
 
 qiniu_auth = qiniu.Auth(QINIU_ACCESS_KEY, QINIU_SECRET_KEY)
@@ -77,6 +79,13 @@ def rsvp(req: HttpRequest):
         model.save()
         _notification_thread_pool.submit(_send_rsvp_notification, model)
     return JsonResponse(model_to_dict(model))
+
+
+@csrf_exempt
+@require_http_methods(['GET'])
+def get_hunt_tasks(req: HttpRequest):
+    openid = req.GET['openid']
+    return JsonResponse([dataclasses.asdict(x) for x in ALL_TASKS], safe=False)
 
 
 @csrf_exempt
