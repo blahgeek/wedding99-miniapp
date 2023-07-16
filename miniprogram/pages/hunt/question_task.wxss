@@ -5,3 +5,9 @@
 .container button {
     margin: 15px auto;
 }
+
+.info {
+    margin: 40px auto 40px;
+    text-align: center;
+}
+

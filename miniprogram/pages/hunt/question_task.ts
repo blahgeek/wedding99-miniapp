@@ -10,6 +10,7 @@ Page({
     answer: -1,
     taskId: '',
     question: undefined as (QuestionTaskDetail | undefined),
+    readOnly: false,
     adAlreadyPlayed: false,
     uiConfig: {
       questionPlayAdButton: '播放视频去掉错误答案',
@@ -20,9 +21,14 @@ Page({
     this.setData(await app.context.getUiConfigUpdateData('question'));
     const eventChannel = this.getOpenerEventChannel();
     eventChannel.on('onLoadTask',
-      (data: {taskId: string, question: QuestionTaskDetail}) => {
+      (data: {taskId: string, question: QuestionTaskDetail, taskState: QuestionTaskState | undefined}) => {
         console.log(`Received loadTask event: ${data.taskId}`);
         this.setData(data);
+        if (data.taskState !== undefined) {
+          this.setData({
+            readOnly: true,
+          });
+        }
       });
   },
 

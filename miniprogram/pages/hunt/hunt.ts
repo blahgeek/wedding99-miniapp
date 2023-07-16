@@ -213,7 +213,11 @@ Page({
         url: '/pages/hunt/question_task',
         events: { onResult },
         success: (res) => {
-          res.eventChannel.emit('onLoadTask', {taskId, question});
+          res.eventChannel.emit('onLoadTask', {
+            taskId,
+            question,
+            taskState: this.data.huntState.taskState[taskId],
+          });
         },
       });
     } else if (task.taskDetail.type == 'photo') {
