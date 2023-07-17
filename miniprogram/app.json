@@ -45,7 +45,7 @@
         "pagePath": "pages/rsvp/rsvp",
         "iconPath": "images/tabbar_info.png",
         "selectedIconPath": "images/tabbar_info_hl.png",
-        "text": "RSVP"
+        "text": "回执"
       },
       {
         "pagePath": "pages/hunt/hunt",
