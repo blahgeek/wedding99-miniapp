@@ -100,6 +100,8 @@ Page({
     wx.openLocation({
       longitude: MAP_LONGITUDE,
       latitude: MAP_LATITUDE,
+      name: '罗兰湖餐厅',
+      address: '北京市朝阳区芳园西路6号丽都公园内',
     });
   },
 })
