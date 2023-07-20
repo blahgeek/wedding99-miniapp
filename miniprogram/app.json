@@ -5,7 +5,9 @@
     "pages/hunt/hunt",
     "pages/hunt/question_task",
     "pages/hunt/photo_task",
-    "pages/hunt/video_ad"
+    "pages/hunt/video_ad",
+    "pages/misc/misc",
+    "pages/misc/bingo"
   ],
   "useExtendedLib": {
     "weui": true
@@ -20,6 +22,7 @@
     "l-icon": "third_party/lin-ui-0.9.13/icon/index",
     "l-grid": "third_party/lin-ui-0.9.13/grid/index",
     "l-grid-item": "third_party/lin-ui-0.9.13/grid-item/index",
+    "l-list": "third_party/lin-ui-0.9.13/list/index",
 
     "mp-html": "third_party/mp-html-2.4.2/index"
   },
@@ -52,6 +55,12 @@
         "iconPath": "images/tabbar_task.png",
         "selectedIconPath": "images/tabbar_task_hl.png",
         "text": "任务"
+      },
+      {
+        "pagePath": "pages/misc/misc",
+        "iconPath": "images/tabbar_hunt.png",
+        "selectedIconPath": "images/tabbar_hunt_hl.png",
+        "text": "发现"
       }
     ]
   },

@@ -1,0 +1,7 @@
+.container {
+    margin: 10px 15px;
+}
+
+.l-list .left-section {
+    font-size: 18px;
+}

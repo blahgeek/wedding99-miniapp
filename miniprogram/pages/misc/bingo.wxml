@@ -1,0 +1,20 @@
+<view class="container">
+
+  <view class="board">
+    <view class="row" wx:for="{{ nums }}" wx:for-item="row">
+      <view wx:for="{{ row }}" wx:for-item="val"
+            class="cell {{ activeMap[val] ? 'active' : '' }}"
+            data-val="{{ val }}"
+            bindtap="onTap">
+        {{ val === -1 ? "FREE" : val }}
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{ hasBingo }}" class="bingo">
+    BINGO!
+  </view>
+
+  <button bindtap="reset">重置</button>
+
+</view>
