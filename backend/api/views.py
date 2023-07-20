@@ -99,6 +99,13 @@ def hunt_score(req: HttpRequest):
     return JsonResponse(model_to_dict(model))
 
 
+@require_http_methods(['GET'])
+def hunt_score_ranking(req: HttpRequest):
+    return JsonResponse({
+        'ranking': list(HuntScore.objects.order_by('-score').values('openid', 'name', 'score')),
+    })
+
+
 @csrf_exempt
 @require_http_methods(['POST'])
 def face_upload_and_detect(req: HttpRequest):

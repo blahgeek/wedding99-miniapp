@@ -14,6 +14,7 @@ module.exports = {
         "pages/hunt/video_ad": "./pages/hunt/video_ad.ts",
         "pages/misc/misc": "./pages/misc/misc.ts",
         "pages/misc/bingo": "./pages/misc/bingo.ts",
+        "pages/misc/ranking": "./pages/misc/ranking.ts",
     },
     output: {
         path: resolve("miniprogram_dist"),

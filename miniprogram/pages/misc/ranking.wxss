@@ -1,0 +1,7 @@
+.container {
+    margin: 30rpx 20rpx;
+}
+
+.title {
+    font-weight: bold;
+}
