@@ -41,26 +41,26 @@
     "list": [
       {
         "pagePath": "pages/main/main",
-        "iconPath": "images/tabbar_main.png",
-        "selectedIconPath": "images/tabbar_main_hl.png",
+        "iconPath": "images/tabbar/main.png",
+        "selectedIconPath": "images/tabbar/main_hl.png",
         "text": "主页"
       },
       {
         "pagePath": "pages/rsvp/rsvp",
-        "iconPath": "images/tabbar_info.png",
-        "selectedIconPath": "images/tabbar_info_hl.png",
+        "iconPath": "images/tabbar/rsvp.png",
+        "selectedIconPath": "images/tabbar/rsvp_hl.png",
         "text": "回执"
       },
       {
         "pagePath": "pages/hunt/hunt",
-        "iconPath": "images/tabbar_task.png",
-        "selectedIconPath": "images/tabbar_task_hl.png",
+        "iconPath": "images/tabbar/hunt.png",
+        "selectedIconPath": "images/tabbar/hunt_hl.png",
         "text": "任务"
       },
       {
         "pagePath": "pages/misc/misc",
-        "iconPath": "images/tabbar_hunt.png",
-        "selectedIconPath": "images/tabbar_hunt_hl.png",
+        "iconPath": "images/tabbar/misc.png",
+        "selectedIconPath": "images/tabbar/misc_hl.png",
         "text": "发现"
       }
     ]
