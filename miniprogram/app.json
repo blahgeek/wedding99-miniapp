@@ -23,9 +23,7 @@
     "l-icon": "third_party/lin-ui-0.9.13/icon/index",
     "l-grid": "third_party/lin-ui-0.9.13/grid/index",
     "l-grid-item": "third_party/lin-ui-0.9.13/grid-item/index",
-    "l-list": "third_party/lin-ui-0.9.13/list/index",
-
-    "mp-html": "third_party/mp-html-2.4.2/index"
+    "l-list": "third_party/lin-ui-0.9.13/list/index"
   },
   "window": {
     "backgroundTextStyle": "light",
