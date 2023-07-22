@@ -1,17 +1,17 @@
 .container {
-    margin: 15px 10px;
+    margin: 30rpx 20rpx;
     text-align: center;
 }
 
 .container button {
-    margin: 10px auto;
+    margin: 20rpx auto;
 }
 
 .task-grid-container {
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin-top: 60rpx;
+    margin-bottom: 60rpx;
 }
 
 .task-name {
-    font-size: 14px;
+    font-size: 28rpx;
 }

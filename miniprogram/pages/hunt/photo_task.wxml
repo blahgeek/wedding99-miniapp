@@ -2,7 +2,7 @@
   <rich-text nodes="{{ photoTask.descriptionRichContent }}"></rich-text>
 
   <view wx:if="{{ taskState && taskState.url }}">
-    <image src="{{ taskState.url }}" style="width: 100%; height: 300px" mode="aspectFit" />
+    <image src="{{ taskState.url }}" id="result-img" mode="aspectFit" />
     <button type="primary" bindtap="takePhoto">重新拍照</button>
   </view>
   <view wx:else >
