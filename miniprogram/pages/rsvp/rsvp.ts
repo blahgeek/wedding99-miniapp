@@ -9,7 +9,7 @@ const app = getApp<AppOption>()
 
 const defaultForm: RsvpResponse = {
   name: '',
-  participate: true,
+  participate: false,
   plusOne: false,
   needHotel: false,
   needHotelStartDate: '2023-09-09',
@@ -20,7 +20,7 @@ const defaultForm: RsvpResponse = {
 Page({
   data: {
     uiConfig: {
-      rsvpHotelNote: "我们可以帮您安排酒店",
+      rsvpHotelNote: "我们可以为您安排酒店",
     },
     mapLongitude: MAP_LONGITUDE,
     mapLatitude: MAP_LATITUDE,
