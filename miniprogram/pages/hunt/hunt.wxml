@@ -8,7 +8,7 @@
     </p>
   </block>
   <block wx:else>
-    <mp-html content="{{ uiConfig.huntHtml }}"></mp-html>
+    <rich-text nodes="{{ uiConfig.huntHtml }}" />
   </block>
 
   <view wx:if="{{ !huntState.name }}">
