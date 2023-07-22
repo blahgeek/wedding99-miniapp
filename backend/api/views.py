@@ -2,6 +2,7 @@ import base64
 import dataclasses
 import uuid
 import json
+import datetime
 import concurrent.futures
 
 from django.http import JsonResponse, HttpResponseNotFound, HttpRequest
@@ -14,7 +15,6 @@ import qiniu
 import requests
 
 from wedding99.config import TELEGRAM_TOKEN, TELEGRAM_NOTIFICATION_CHAT
-from wedding99.config import FACEPP_FACESET_ID
 from wedding99.config import QINIU_ACCESS_KEY, QINIU_SECRET_KEY, QINIU_BUCKET_NAME, QINIU_PUBLIC_URL
 
 from .wxclient import wechat_client
@@ -119,6 +119,7 @@ def face_upload_and_detect(req: HttpRequest):
     qiniu.put_data(upload_token, upload_key, image_content,
                    mime_type=image.content_type or 'application/octet-stream')
 
+    faceset_id = 'wedding99_' + datetime.datetime.now().strftime('%Y%m%d')
     # for each face, search in existing faceset:
     # if not found, return it and add it to faceset;
     # if found, return the found face token.
@@ -131,7 +132,7 @@ def face_upload_and_detect(req: HttpRequest):
         try:
             search_resp = facepp_api('/v3/search', {
                 'face_token': face_token,
-                'outer_id': FACEPP_FACESET_ID,
+                'outer_id': faceset_id,
             })
             if search_resp['results'] and \
                search_resp['results'][0]['confidence'] > search_resp['thresholds']['1e-5']:
@@ -148,7 +149,7 @@ def face_upload_and_detect(req: HttpRequest):
 
     if new_face_tokens:
         facepp_api('/v3/faceset/create', {
-            'outer_id': FACEPP_FACESET_ID,
+            'outer_id': faceset_id,
             'face_tokens': ','.join(new_face_tokens),
             'force_merge': 1,
         })
