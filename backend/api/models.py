@@ -20,11 +20,6 @@ class RsvpResponse(models.Model):
         return f'RsvpResponse: {self.name}, participate={self.participate}'
 
 
-class UiConfig(models.Model):
-    key = models.CharField(max_length=64, primary_key=True)
-    value = models.TextField()
-
-
 class HuntScore(models.Model):
     openid = models.CharField(max_length=128, primary_key=True)
     name = models.CharField(max_length=64)
