@@ -35,7 +35,7 @@ Page({
 
   onShow: async function() {
     wx.showLoading({
-      title: 'Loading',
+      title: 'Loading...',
     });
     this.setData(await app.context.getUiConfigUpdateData('rsvp'));
     const openid = await app.context.getOpenidCached();
@@ -64,7 +64,7 @@ Page({
   submitForm: async function() {
     console.info(`Submitting RSVP: ${JSON.stringify(this.data.formData)}`);
     wx.showLoading({
-      title: 'Submitting...',
+      title: '正在提交...',
     });
     try {
       const openid = await app.context.getOpenidCached();
@@ -73,13 +73,13 @@ Page({
         submitted: true,
       });
       wx.showToast({
-        title: 'Submitted!',
+        title: '提交成功',
         icon: 'success',
       });
     } catch (e) {
       console.error(e);
       wx.showToast({
-        title: 'Error submitting',
+        title: '提交失败',
         icon: 'error',
       });
     } finally {

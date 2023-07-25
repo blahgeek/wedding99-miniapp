@@ -100,7 +100,7 @@ Page({
 
   _refreshPage: async function() {
     wx.showLoading({
-      title: 'Loading',
+      title: 'Loading...',
     });
     this.setData(await app.context.getUiConfigUpdateData('hunt'));
 

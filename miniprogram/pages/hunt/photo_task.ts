@@ -42,7 +42,7 @@ Page({
     }
 
     wx.showLoading({
-      title: 'Detecting...',
+      title: '检测中...',
     });
     let result: UploadAndDetectResult;
     try {
@@ -50,7 +50,7 @@ Page({
     } catch (e) {
       wx.hideLoading();
       wx.showModal({
-        title: 'error',
+        title: '出错了',
         content: `detect error: ${e}`,
         showCancel: false,
         confirmText: '好',
