@@ -3,6 +3,7 @@
     "module": "CommonJS",
     "target": "ES2020",
     "strict": true,
+    "esModuleInterop": true,
     "lib": ["ES2020"]
   },
   "include": [

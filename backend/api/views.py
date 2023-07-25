@@ -1,11 +1,13 @@
 import base64
 import dataclasses
+import functools
+import hashlib
 import uuid
 import json
 import datetime
 import concurrent.futures
 
-from django.http import JsonResponse, HttpResponseNotFound, HttpRequest
+from django.http import HttpResponseForbidden, JsonResponse, HttpResponseNotFound, HttpRequest
 from django.forms.models import model_to_dict
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
@@ -26,7 +28,22 @@ from .ui_config import UI_CONFIGS
 
 qiniu_auth = qiniu.Auth(QINIU_ACCESS_KEY, QINIU_SECRET_KEY)
 
+
+# a weak signature check, to prevent API abuse by tencent server
+def sigcheck(f):
+    @functools.wraps(f)
+    def wrapper(req: HttpRequest):
+        expected_sig = hashlib.sha1(f'wedding99/{req.get_full_path()}/'.encode() + req.body)\
+                              .hexdigest().lower()
+        sig = req.headers['X-API-Sig'].strip().lower()
+        if expected_sig != sig:
+            return HttpResponseForbidden()
+        return f(req)
+    return wrapper
+
+
 @require_http_methods(['GET'])
+@sigcheck
 def code2session(req):
     code = req.GET['code']
     result = wechat_client.wxa.code_to_session(code)
@@ -34,6 +51,7 @@ def code2session(req):
 
 
 @require_http_methods(['GET'])
+@sigcheck
 def global_config(_):
     return JsonResponse({
         'uiConfig': UI_CONFIGS,
@@ -63,6 +81,7 @@ def _send_rsvp_notification(response: RsvpResponse):
 
 @csrf_exempt
 @require_http_methods(['POST', 'GET'])
+@sigcheck
 def rsvp(req: HttpRequest):
     openid = req.GET['openid']
 
@@ -82,6 +101,7 @@ def rsvp(req: HttpRequest):
 
 @csrf_exempt
 @require_http_methods(['GET'])
+@sigcheck
 def get_hunt_tasks(req: HttpRequest):
     openid = req.GET['openid']
     return JsonResponse([dataclasses.asdict(x) for x in ALL_TASKS], safe=False)
@@ -89,6 +109,7 @@ def get_hunt_tasks(req: HttpRequest):
 
 @csrf_exempt
 @require_http_methods(['POST'])
+@sigcheck
 def hunt_score(req: HttpRequest):
     openid = req.GET['openid']
     model, _ = HuntScore.objects.get_or_create(openid=openid)
@@ -99,6 +120,7 @@ def hunt_score(req: HttpRequest):
 
 
 @require_http_methods(['GET'])
+@sigcheck
 def hunt_score_ranking(req: HttpRequest):
     return JsonResponse({
         'ranking': list(HuntScore.objects.order_by('-score').values('openid', 'name', 'score')),
