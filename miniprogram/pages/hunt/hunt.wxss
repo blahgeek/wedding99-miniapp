@@ -15,3 +15,17 @@
 .task-name {
     font-size: 28rpx;
 }
+
+.player-name-container {
+    font-size: 90%;
+    color: rgba(0,0,0,0.55);
+}
+
+.player-name-container .player-name {
+    font-weight: bold;
+    margin-right: 0.5em;
+}
+
+.player-name-container a {
+    color: #576b95;
+}

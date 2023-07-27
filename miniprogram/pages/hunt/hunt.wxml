@@ -26,7 +26,10 @@
 
   <view wx:else>
     <button type="primary" bindtap="scanCode">{{ uiConfig.huntScanButton }}</button>
-    <button bindtap="userReset">重新开始</button>
+    <view class="player-name-container">
+      登录为<span class="player-name">{{ huntState.name }}</span>
+      <a bindtap="userReset">点我重置</a>
+    </view>
 
     <view class="task-grid-container">
     <l-grid show-border="{{ true }}">
