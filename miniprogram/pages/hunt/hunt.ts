@@ -142,6 +142,7 @@ Page({
           this._modifyHuntState((_) => {
             return { ...DEFAULT_HUNT_STATE };
           });
+          wx.removeStorageSync(STORAGE_HUNT_SUBMITTED_SCORE_KEY);
         }
       },
     });
