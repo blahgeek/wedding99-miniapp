@@ -1,5 +1,6 @@
 .container {
     margin: 30rpx 20rpx;
+    padding-bottom: 30rpx;
 }
 
 .container button {
