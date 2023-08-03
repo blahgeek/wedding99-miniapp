@@ -3,17 +3,16 @@
     text-align: center;
 }
 
-.container .title {
-    margin: 150rpx 0 40rpx;
-    font-size: 64rpx;
-}
-
-.container .subtitle {
-    font-size: 32rpx;
+.container image {
+    margin-top: -50px;
 }
 
 .rsvp-container {
     position: fixed;
     bottom: 40rpx;
     width: 100%;
+}
+
+.rsvp-container button {
+    color: #683c40;
 }

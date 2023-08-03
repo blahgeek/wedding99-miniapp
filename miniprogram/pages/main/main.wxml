@@ -1,12 +1,10 @@
 <view class="container">
-  <image src="../../images/main_top.png" mode="widthFix" style="width: 100%"></image>
-  <p class="title">赵一开 & 张婷</p>
-  <p class="subtitle">2023.09.09晚 北京</p>
+  <image src="../../images/main.jpg" mode="widthFix" style="width: 100%"></image>
 
   <view class="rsvp-container">
     <button type="default">
       <navigator url="/pages/rsvp/rsvp" open-type="switchTab">
-        RSVP
+        填写回执
       </navigator>
     </button>
   </view>
