@@ -12,6 +12,8 @@ function clamp(value: number, min: number, max: number) {
 
 const SCREEN_WIDTH = wx.getSystemInfoSync().screenWidth;
 
+const SHARE_COVER_IMG_URL = 'https://wedding-photo.blahgeek.com/assets/share_cover.jpg';
+const SHARE_MESSAGE = '邀请函 | 2023.9.9 | 北京';
 
 Page({
   data: {
@@ -24,10 +26,10 @@ Page({
     foregroundOffsetY: 0,
 
     uiConfig: {
-      mainShareMessageTitle: undefined,
-      mainShareMessageImage: undefined,
-      mainShareTimelineTitle: undefined,
-      mainShareTimelineImage: undefined,
+      mainShareMessageTitle: SHARE_MESSAGE,
+      mainShareMessageImage: SHARE_COVER_IMG_URL,
+      mainShareTimelineTitle: SHARE_MESSAGE,
+      mainShareTimelineImage: SHARE_COVER_IMG_URL,
     },
   },
 
