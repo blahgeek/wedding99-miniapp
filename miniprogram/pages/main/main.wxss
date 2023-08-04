@@ -22,6 +22,7 @@ page {
 }
 
 .rsvp-container {
+    z-index: 20;
     position: fixed;
     bottom: 40rpx;
     width: 100%;
