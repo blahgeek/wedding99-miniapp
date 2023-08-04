@@ -1,4 +1,9 @@
-<view class="container" style="{{ 'background-image: url(' + (uiConfig.mainImageUrl || mainImageUrl) + ')' }}">
+<view class="container">
+
+  <view class="img" id="background" style="{{ 'background-image: url(' + backgroundImgUrl + ')' }}"></view>
+  <view class="img" id="foreground"
+        style="{{ 'background-image: url(' + foregroundImgUrl + '); transform: translateY(' + foregroundOffsetY + 'px) translateX(' + foregroundOffsetX + 'px);' }}"
+        ></view>
 
   <view class="rsvp-container">
     <button type="default">
