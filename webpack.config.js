@@ -46,7 +46,7 @@ module.exports = {
                     from: "**/*",
                     to: "./",
                     globOptions: {
-                        ignore: ["**/*.js", "**/*.ts", "**/*.xcf"],
+                        ignore: ["**/*.js", "**/*.ts", "**/*.xcf", "**/import/*"],
                     },
                 },
                 {

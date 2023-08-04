@@ -1,6 +1,6 @@
 import 'miniprogram-api-typings';
 
-import MAIN_JPG_DATA from '../../images/main.jpg';
+import MAIN_JPG_DATA from '../../images/import/main.jpg';
 import { AppOption } from '../../utils/app_context';
 
 const app = getApp<AppOption>()
