@@ -27,6 +27,10 @@ module.exports = {
                 use: 'ts-loader',
                 exclude: /(node_modules)|(third_party)/,
             },
+            {
+                test: /\.(jpg|png)$/,
+                type: 'asset/inline'
+            },
         ],
     },
     resolve: {

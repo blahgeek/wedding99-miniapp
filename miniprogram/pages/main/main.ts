@@ -1,11 +1,15 @@
 import 'miniprogram-api-typings';
+
+import MAIN_JPG_DATA from '../../images/main.jpg';
 import { AppOption } from '../../utils/app_context';
 
 const app = getApp<AppOption>()
 
 Page({
   data: {
+    mainImageUrl: '',
     uiConfig: {
+      mainImageUrl: undefined,
       mainShareMessageTitle: undefined,
       mainShareMessageImage: undefined,
       mainShareTimelineTitle: undefined,
@@ -15,6 +19,10 @@ Page({
   onLoad: async function() {
     wx.showLoading({
       title: 'Loading...'
+    });
+
+    this.setData({
+      mainImageUrl: MAIN_JPG_DATA,
     });
     this.setData(await app.context.getUiConfigUpdateData('main'));
     wx.hideLoading();
