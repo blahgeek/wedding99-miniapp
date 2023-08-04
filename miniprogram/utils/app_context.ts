@@ -62,7 +62,7 @@ export default class AppContext {
       });
     });
 
-    const result = (await request('/api/code2session', { code })).data;
+    const result = (await request(`/api/code2session?code=${code}`)).data;
     const openid = result['openid'];
     if (typeof openid !== 'string') {
       throw new Error(`invalid response: ${JSON.stringify(result)}`);
