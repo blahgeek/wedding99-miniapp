@@ -6,7 +6,7 @@ import logging
 import uuid
 import json
 import datetime
-import concurrent.futures
+import multiprocessing
 
 from django.http import HttpResponseForbidden, JsonResponse, HttpResponseNotFound, HttpRequest
 from django.forms.models import model_to_dict
@@ -62,14 +62,6 @@ def global_config(_):
     })
 
 
-_notification_thread_pool = None
-
-def get_notification_thread_pool():
-    global _notification_thread_pool
-    if _notification_thread_pool is None:
-        _notification_thread_pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
-    return _notification_thread_pool
-
 def _send_rsvp_notification(response: RsvpResponse):
     if not TELEGRAM_TOKEN or not TELEGRAM_NOTIFICATION_CHAT:
         return
@@ -85,17 +77,12 @@ def _send_rsvp_notification(response: RsvpResponse):
     if response.notes:
         msg += f'备注：{response.notes}'
 
-    api_host = 'https://tg-api.proxy.wall.blahgeek.com'
-    sess = requests.Session()
-    sess.mount(api_host, HTTPAdapter(max_retries=5))
-    try:
-        r = sess.post(f'{api_host}/bot{TELEGRAM_TOKEN}/sendMessage', data={
+    def _send():
+        requests.post(f'https://tg-api.proxy.wall.blahgeek.com/bot{TELEGRAM_TOKEN}/sendMessage', json={
             'chat_id': TELEGRAM_NOTIFICATION_CHAT,
             'text': msg,
         })
-        r.raise_for_status()
-    except:
-        logging.exception('Failed to send telegram notification')
+    multiprocessing.Process(target=_send).start()
 
 @csrf_exempt
 @require_http_methods(['POST', 'GET'])
@@ -113,7 +100,7 @@ def rsvp(req: HttpRequest):
         for k, v in json.loads(req.body).items():
             setattr(model, k, v)
         model.save()
-        get_notification_thread_pool().submit(_send_rsvp_notification, model)
+        _send_rsvp_notification(model)
     return JsonResponse(model_to_dict(model))
 
 

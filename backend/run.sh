@@ -16,4 +16,4 @@ unset ADMIN_USER
 unset ADMIN_EMAIL
 unset ADMIN_PASSWD
 
-exec uwsgi --module=wedding99.wsgi:application --socket=0.0.0.0:8000 --processes=4
+exec uwsgi --module=wedding99.wsgi:application --socket=0.0.0.0:8000 --processes=4 --master
