@@ -2,6 +2,7 @@ import base64
 import dataclasses
 import functools
 import hashlib
+import logging
 import uuid
 import json
 import datetime
@@ -15,6 +16,7 @@ from django.core.files.uploadedfile import UploadedFile
 
 import qiniu
 import requests
+from requests.adapters import HTTPAdapter
 
 from wedding99.config import TELEGRAM_TOKEN, TELEGRAM_NOTIFICATION_CHAT
 from wedding99.config import QINIU_ACCESS_KEY, QINIU_SECRET_KEY, QINIU_BUCKET_NAME, QINIU_PUBLIC_URL
@@ -60,7 +62,7 @@ def global_config(_):
     })
 
 
-_notification_thread_pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+_notification_thread_pool = concurrent.futures.ThreadPoolExecutor(max_workers=2)
 
 def _send_rsvp_notification(response: RsvpResponse):
     if not TELEGRAM_TOKEN or not TELEGRAM_NOTIFICATION_CHAT:
@@ -76,10 +78,18 @@ def _send_rsvp_notification(response: RsvpResponse):
         msg += '不参加; '
     if response.notes:
         msg += f'备注：{response.notes}'
-    requests.post(f'https://tg-api.proxy.wall.blahgeek.com/bot{TELEGRAM_TOKEN}/sendMessage', data={
-        'chat_id': TELEGRAM_NOTIFICATION_CHAT,
-        'text': msg,
-    })
+
+    api_host = 'https://tg-api.proxy.wall.blahgeek.com'
+    sess = requests.Session()
+    sess.mount(api_host, HTTPAdapter(max_retries=5))
+    try:
+        r = sess.post(f'{api_host}/bot{TELEGRAM_TOKEN}/sendMessage', data={
+            'chat_id': TELEGRAM_NOTIFICATION_CHAT,
+            'text': msg,
+        })
+        r.raise_for_status()
+    except:
+        logging.exception('Failed to send telegram notification')
 
 @csrf_exempt
 @require_http_methods(['POST', 'GET'])
