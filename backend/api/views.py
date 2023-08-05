@@ -47,7 +47,9 @@ def sigcheck(f):
 def code2session(req):
     code = req.GET['code']
     result = wechat_client.wxa.code_to_session(code)
-    return JsonResponse(result)
+    return JsonResponse({
+        'openid': result['openid'],
+    })
 
 
 @require_http_methods(['GET'])
