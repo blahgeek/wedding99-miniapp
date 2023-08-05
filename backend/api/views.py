@@ -62,7 +62,13 @@ def global_config(_):
     })
 
 
-_notification_thread_pool = concurrent.futures.ThreadPoolExecutor(max_workers=2)
+_notification_thread_pool = None
+
+def get_notification_thread_pool():
+    global _notification_thread_pool
+    if _notification_thread_pool is None:
+        _notification_thread_pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    return _notification_thread_pool
 
 def _send_rsvp_notification(response: RsvpResponse):
     if not TELEGRAM_TOKEN or not TELEGRAM_NOTIFICATION_CHAT:
@@ -107,7 +113,7 @@ def rsvp(req: HttpRequest):
         for k, v in json.loads(req.body).items():
             setattr(model, k, v)
         model.save()
-        _notification_thread_pool.submit(_send_rsvp_notification, model)
+        get_notification_thread_pool().submit(_send_rsvp_notification, model)
     return JsonResponse(model_to_dict(model))
 
 
