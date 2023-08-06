@@ -8,7 +8,7 @@ import json
 import datetime
 import multiprocessing
 
-from django.http import HttpResponseForbidden, JsonResponse, HttpResponseNotFound, HttpRequest
+from django.http import HttpResponseBadRequest, HttpResponseForbidden, JsonResponse, HttpResponseNotFound, HttpRequest
 from django.forms.models import model_to_dict
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
@@ -65,17 +65,7 @@ def global_config(_):
 def _send_rsvp_notification(response: RsvpResponse):
     if not TELEGRAM_TOKEN or not TELEGRAM_NOTIFICATION_CHAT:
         return
-    msg = f'{response.name}提交了回复：'
-    if response.participate:
-        msg += '确认参加; '
-        if response.plusOne:
-            msg += '携伴; '
-        if response.needHotel:
-            msg += f'需要酒店 {response.needHotelStartDate} 至 {response.needHotelEndDate}; '
-    else:
-        msg += '不参加; '
-    if response.notes:
-        msg += f'备注：{response.notes}'
+    msg = f'{response.name}提交了回复：{response.to_message()}'
 
     def _send():
         requests.post(f'https://tg-api.proxy.wall.blahgeek.com/bot{TELEGRAM_TOKEN}/sendMessage', json={
@@ -96,8 +86,11 @@ def rsvp(req: HttpRequest):
         except RsvpResponse.DoesNotExist:
             return HttpResponseNotFound()
     else:
+        req_body = json.loads(req.body)
+        if req_body.get('name', '') == '':
+            return HttpResponseBadRequest()
         model, _ = RsvpResponse.objects.get_or_create(openid=openid)
-        for k, v in json.loads(req.body).items():
+        for k, v in req_body.items():
             setattr(model, k, v)
         model.save()
         _send_rsvp_notification(model)

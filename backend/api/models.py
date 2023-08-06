@@ -16,8 +16,22 @@ class RsvpResponse(models.Model):
     needHotelEndDate = models.CharField(max_length=64)
     notes = models.TextField()
 
+    def to_message(self):
+        msg = ''
+        if self.participate:
+            msg += '确认参加; '
+            if self.plusOne:
+                msg += '携伴; '
+            if self.needHotel:
+                msg += f'需要酒店 {self.needHotelStartDate} 至 {self.needHotelEndDate}; '
+        else:
+            msg += '不参加; '
+        if self.notes:
+            msg += f'备注：{self.notes}'
+        return msg
+
     def __str__(self):
-        return f'RsvpResponse: {self.name}, participate={self.participate}'
+        return f'{self.name}: {self.to_message()}'
 
 
 class HuntScore(models.Model):
