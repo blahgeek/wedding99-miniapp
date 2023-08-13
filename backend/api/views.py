@@ -24,7 +24,7 @@ from wedding99.config import QINIU_ACCESS_KEY, QINIU_SECRET_KEY, QINIU_BUCKET_NA
 from .wxclient import wechat_client
 from .models import RsvpResponse, HuntScore
 from .facepp import facepp_api, FaceppAPIError
-from .hunt_tasks import ALL_TASKS
+from .hunt_tasks import get_tasks as do_get_tasks
 from .ui_config import UI_CONFIGS
 
 
@@ -98,11 +98,13 @@ def rsvp(req: HttpRequest):
 
 
 @csrf_exempt
-@require_http_methods(['GET'])
-@sigcheck
+@require_http_methods(['GET', 'POST'])  # GET for backwards compatibility
 def get_hunt_tasks(req: HttpRequest):
-    openid = req.GET['openid']
-    return JsonResponse([dataclasses.asdict(x) for x in ALL_TASKS], safe=False)
+    openid = str(req.GET['openid'])
+    name = ''
+    if req.method == 'POST':
+        name = json.loads(req.body)['name']
+    return JsonResponse([dataclasses.asdict(x) for x in do_get_tasks(openid, name)], safe=False)
 
 
 @csrf_exempt
