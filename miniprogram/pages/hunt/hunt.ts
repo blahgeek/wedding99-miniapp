@@ -25,6 +25,8 @@ type HuntState = z.infer<typeof HuntStateSchema>;
 const STORAGE_HUNT_STATE_KEY = 'hunt_state_0709';
 const STORAGE_HUNT_SUBMITTED_SCORE_KEY = 'hunt_submitted_score';
 const QRCODE_PREFIX = 'wedding99:';
+const QRCODE_UNLOCKALL = 'wedding99:__unlockall__';
+const QRCODE_UNLOCKALL_QUERY = 'unlockall';
 
 const DEFAULT_HUNT_STATE: HuntState = {
   name: undefined,
@@ -43,7 +45,7 @@ function readHuntStateFromStorage(): HuntState {
 
 Page({
   data: {
-    // huntQuestionsCount: 0,
+    scanButtonDisabled: false,
     huntTasks: [] as HuntTask[],
     huntState: DEFAULT_HUNT_STATE,
     uiConfig: {
@@ -51,7 +53,8 @@ Page({
       huntInvalidScan: '无效二维码',
       huntResetConfirm: '确定重新开始吗？',
       huntNameInputPlaceholder: '请输入姓名后开始',
-      huntScanButton: '扫码',
+      huntScanButton: '扫码解锁',
+      huntScanButtonDisabled: '已全部解锁',
       huntLocked: '未解锁',
     },
   },
@@ -98,25 +101,49 @@ Page({
     return filteredTasks[0];
   },
 
-  _refreshPage: async function() {
+  _unlockAllTasks: async function() {
+    this._modifyHuntState(s => {
+      this.data.huntTasks.forEach(task => {
+        if (s.taskStatus[task.id] === undefined) {
+          s.taskStatus[task.id] = 'unlocked';
+        }
+      });
+      return s;
+    });
+    this.setData({
+      scanButtonDisabled: true,
+    });
+  },
+
+  _fetchTasks: async function() {
+    if (this.data.huntState.name === undefined) {
+      return;
+    }
+
     wx.showLoading({
       title: 'Loading...',
     });
-    this.setData(await app.context.getUiConfigUpdateData('hunt'));
-
     const huntTasks = await getHuntTasks(await app.context.getOpenidCached());
-    const huntState = readHuntStateFromStorage();
-    this.setData({huntTasks, huntState});
+    this.setData({huntTasks});
+
+    if (wx.getEnterOptionsSync().query[QRCODE_UNLOCKALL_QUERY] !== undefined) {
+      console.log('unlock all tasks because of enter with query');
+      this._unlockAllTasks();
+    }
 
     wx.hideLoading();
   },
 
   onLoad: async function() {
-    await this._refreshPage();
+    this.setData(await app.context.getUiConfigUpdateData('hunt'));
+    const huntState = readHuntStateFromStorage();
+    this.setData({huntState});
+
+    await this._fetchTasks();
   },
 
   onPullDownRefresh: async function() {
-    await this._refreshPage();
+    await this._fetchTasks();
     wx.stopPullDownRefresh();
   },
 
@@ -124,12 +151,13 @@ Page({
     this._submitHuntScoreIfRequired();  // submit if not up-to-date, no wait
   },
 
-  submitNameAndStart: function(e: WechatMiniprogram.Input) {
+  submitNameAndStart: async function(e: WechatMiniprogram.Input) {
     if (e.detail.value.length > 0) {
       this._modifyHuntState((s) => {
         s.name = e.detail.value;
         return s;
       });
+      await this._fetchTasks();
     }
   },
 
@@ -141,6 +169,9 @@ Page({
         if (res.confirm) {
           this._modifyHuntState((_) => {
             return { ...DEFAULT_HUNT_STATE };
+          });
+          this.setData({
+            scanButtonDisabled: false,
           });
           wx.removeStorageSync(STORAGE_HUNT_SUBMITTED_SCORE_KEY);
         }
@@ -161,6 +192,21 @@ Page({
           },
         });
       });
+
+    scanResult.result = scanResult.result || '';
+    scanResult.path = scanResult.path || '';
+
+    if (scanResult.result === QRCODE_UNLOCKALL || scanResult.path.indexOf(QRCODE_UNLOCKALL_QUERY) >= 0) {
+      console.log('unlock all tasks from scan');
+      this._unlockAllTasks();
+      wx.showModal({
+        title: '扫码成功',
+        content: `全部任务已解锁`,
+        showCancel: false,
+      });
+      return;
+    }
+
     const taskId = scanResult.result.startsWith(QRCODE_PREFIX) ?
       scanResult.result.substr(QRCODE_PREFIX.length) : '';
 
