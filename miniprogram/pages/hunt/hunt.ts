@@ -22,7 +22,7 @@ const HuntStateSchema = z.object({
 type HuntState = z.infer<typeof HuntStateSchema>;
 
 
-const STORAGE_HUNT_STATE_KEY = 'hunt_state_0709';
+const STORAGE_HUNT_STATE_KEY = 'hunt_state_0815';
 const STORAGE_HUNT_SUBMITTED_SCORE_KEY = 'hunt_submitted_score';
 const QRCODE_PREFIX = 'wedding99:';
 const QRCODE_UNLOCKALL = 'wedding99:__unlockall__';
