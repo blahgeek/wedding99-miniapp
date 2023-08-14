@@ -123,7 +123,7 @@ Page({
     wx.showLoading({
       title: 'Loading...',
     });
-    const huntTasks = await getHuntTasks(await app.context.getOpenidCached());
+    const huntTasks = await getHuntTasks(await app.context.getOpenidCached(), this.data.huntState.name);
     this.setData({huntTasks});
 
     if (wx.getEnterOptionsSync().query[QRCODE_UNLOCKALL_QUERY] !== undefined) {

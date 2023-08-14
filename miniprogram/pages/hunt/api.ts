@@ -87,12 +87,12 @@ const MOCK_TASKS: HuntTasks = [
 
 const USE_MOCK_TASKS = false;
 
-export async function getHuntTasks(openid: string): Promise<HuntTasks> {
+export async function getHuntTasks(openid: string, name: string): Promise<HuntTasks> {
   if (USE_MOCK_TASKS) {
     return await returnAfter(MOCK_TASKS, 500);
   }
 
-  const { data, statusCode } = await request(`/api/hunt_tasks?openid=${openid}`);
+  const { data, statusCode } = await request(`/api/hunt_tasks?openid=${openid}`, { name }, 'POST');
   if (statusCode !== 200) {
     throw new Error(`getHuntTasks failed: ${statusCode}`);
   }
