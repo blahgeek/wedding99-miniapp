@@ -135,11 +135,16 @@ Page({
   },
 
   onLoad: async function() {
+    wx.showLoading({
+      title: 'Loading...',
+    });
+
     this.setData(await app.context.getUiConfigUpdateData('hunt'));
     const huntState = readHuntStateFromStorage();
     this.setData({huntState});
 
     await this._fetchTasks();
+    wx.hideLoading();
   },
 
   onPullDownRefresh: async function() {

@@ -17,4 +17,8 @@
 
   <button bindtap="reset">重置</button>
 
+  <view class="weui-footer weui-footer_fixed-bottom">
+    <view class="weui-footer__text">{{ uiConfig.bingoFooter }}</view>
+  </view>
+
 </view>

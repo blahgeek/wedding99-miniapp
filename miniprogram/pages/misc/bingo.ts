@@ -1,7 +1,8 @@
 import 'miniprogram-api-typings';
 
+import { AppOption } from '../../utils/app_context';
+
 const SIZE = 5;
-const MAX_N = 99;  // TODO
 
 function shuffleArray(array: number[]) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -14,15 +15,23 @@ function range(start: number, end: number): number[] {
   return Array(end - start).fill(0).map((_, i) => i + start);
 };
 
+const app = getApp<AppOption>()
+
 Page({
   data: {
     nums: [] as number[][],
     activeMap: {} as Record<number, boolean>,
     hasBingo: false,
+
+    uiConfig: {
+      bingoMaxN: '99',
+      bingoFooter: 'Size=5, Max_N=99',
+    },
   },
 
   _reset: function() {
-    let allnums = range(1, MAX_N + 1)
+    let maxN = +this.data.uiConfig.bingoMaxN;
+    let allnums = range(1, maxN + 1)
     shuffleArray(allnums);
     allnums[Math.floor(SIZE/2) * SIZE + Math.floor(SIZE/2)] = -1;
 
@@ -74,7 +83,12 @@ Page({
     });
   },
 
-  onLoad: function() {
+  onLoad: async function() {
+    wx.showLoading({
+      title: 'Loading...',
+    });
+    this.setData(await app.context.getUiConfigUpdateData('bingo'));
+    wx.hideLoading();
     this._reset();
   },
 
