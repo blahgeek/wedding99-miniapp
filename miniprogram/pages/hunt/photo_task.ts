@@ -34,7 +34,7 @@ Page({
         camera: 'front',
         sizeType: ['compressed'],
         success: (res) => resolve(res),
-        fail: () => reject('chooseMedia failed'),
+        fail: (e) => reject(`chooseMedia failed: ${e.errMsg}`),
       });
     });
     if (photoResult.tempFiles.length !== 1) {
