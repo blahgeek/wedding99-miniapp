@@ -26,6 +26,7 @@ Page({
     uiConfig: {
       bingoMaxN: '50',
       bingoFooter: 'max_n=50, E(turns)=26.8',
+      bingoResetConfirm: '确定重新开始吗？',
     },
   },
 
@@ -93,7 +94,15 @@ Page({
   },
 
   reset: function() {
-    this._reset();
+    wx.showModal({
+      title: '提示',
+      content: this.data.uiConfig.bingoResetConfirm,
+      success: (res) => {
+        if (res.confirm) {
+          this._reset();
+        }
+      },
+    });
   }
 
 })
