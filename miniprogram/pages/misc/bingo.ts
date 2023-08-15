@@ -24,8 +24,8 @@ Page({
     hasBingo: false,
 
     uiConfig: {
-      bingoMaxN: '99',
-      bingoFooter: 'Size=5, Max_N=99',
+      bingoMaxN: '50',
+      bingoFooter: 'max_n=50, E(turns)=26.8',
     },
   },
 
