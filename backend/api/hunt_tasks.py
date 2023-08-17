@@ -47,11 +47,17 @@ _DEFAULT_TASKS = [
         taskDetail=QuestionTaskDetail(
             questionRichContent='''
             <h3>以下哪张是新娘小时候的照片？</h3>
+            <h4> A: </h4>
+            <img width="100%" src="https://wedding-photo.blahgeek.com/assets/whoisshe/photo_6264892559738386395_y.jpg" />
+            <h4> B: </h4>
+            <img width="100%" src="https://wedding-photo.blahgeek.com/assets/whoisshe/photo_6264892559738386396_y.jpg" />
+            <h4> C: </h4>
+            <img width="100%" src="https://wedding-photo.blahgeek.com/assets/whoisshe/photo_6264892559738386397_y.jpg" />
             ''',
-            answers=[' A', ' B', ' C', ' D'],
+            answers=[' A', ' B', ' C'],
             correctAnswer=1,
             explanation='',
-            removeAnswersAfterAd=[],
+            removeAnswersAfterAd=[0],
         )
     ),
     HuntTask(
@@ -76,11 +82,17 @@ _DEFAULT_TASKS = [
         taskDetail=QuestionTaskDetail(
             questionRichContent='''
             <h3>以下哪张是新郎小时候的照片？</h3>
+            <h4> A: </h4>
+            <img width="100%" src="https://wedding-photo.blahgeek.com/assets/whoishe/photo_6264892559738386394_y.jpg" />
+            <h4> B: </h4>
+            <img width="100%" src="https://wedding-photo.blahgeek.com/assets/whoishe/photo_6264892559738386393_y.jpg" />
+            <h4> C: </h4>
+            <img width="100%" src="https://wedding-photo.blahgeek.com/assets/whoishe/photo_6264773159647558284_y.jpg" />
             ''',
-            answers=[' A', ' B', ' C', ' D'],
-            correctAnswer=1,
+            answers=[' A', ' B', ' C'],
+            correctAnswer=2,
             explanation='',
-            removeAnswersAfterAd=[],
+            removeAnswersAfterAd=[0],
         )
     ),
 ]
