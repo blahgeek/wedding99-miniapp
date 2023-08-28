@@ -20,10 +20,11 @@
 }
 
 .drag-separator {
-    width: 128rpx;
+    /* do not wrap */
+    width: 300rpx;
     height: 128rpx;
     display: inline-block;
-    text-align: center;
+    text-align: left;
     line-height: 128rpx;
     vertical-align: middle;
 }
