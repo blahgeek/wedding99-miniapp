@@ -1,8 +1,13 @@
 <view class="container">
-  <view class="title">
-    姓名 : 完成任务数量
-  </view>
-  <view class="item" wx:for="{{ ranking }}">
-    {{ item.name }} : {{ item.score }}
-  </view>
+  <block wx:if="{{ htmlContent }}">
+    <rich-text nodes="{{ htmlContent }}" />
+  </block>
+  <block wx:else>
+    <view class="title">
+      姓名 : 完成任务数量
+    </view>
+    <view class="item" wx:for="{{ ranking }}">
+      {{ item.name }} : {{ item.score }}
+    </view>
+  </block>
 </view>

@@ -3,9 +3,7 @@ import 'miniprogram-api-typings';
 import { request } from '../../utils/request';
 
 Page({
-  data: {
-    ranking: [],
-  },
+  data: {},
 
   onShow: async function() {
     wx.showLoading({
@@ -13,9 +11,7 @@ Page({
     });
     const { data, statusCode } = await request('/api/hunt_score_ranking');
     if (statusCode === 200) {
-      this.setData({
-        ranking: data['ranking'],
-      });
+      this.setData(data);
     }
     wx.hideLoading();
   },
