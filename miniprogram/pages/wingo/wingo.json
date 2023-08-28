@@ -1,5 +1,5 @@
 {
-    "navigationBarTitleText": "Word Bingo",
+    "navigationBarTitleText": "Bingo",
     "usingComponents": {
         "drag-item": "./wingo-drag-item"
     }
