@@ -1,0 +1,44 @@
+.container {
+    width: 640rpx;
+    height: 640rpx;
+    margin: 10rpx auto;
+    text-align: center;
+}
+
+.help {
+    margin: 10rpx auto;
+    font-size: 90%;
+    color: rgba(0,0,0,0.55);
+}
+
+.help a {
+    color: #576b95;
+}
+
+.action {
+    margin: 20rpx auto 20rpx;
+}
+
+.drag-separator {
+    width: 128rpx;
+    height: 128rpx;
+    display: inline-block;
+    text-align: center;
+    line-height: 128rpx;
+    vertical-align: middle;
+}
+
+.board {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.board-cell-active {
+    background-color: #c0c0c0;
+}
+
+.bingo {
+    margin: 20rpx auto 20rpx;
+    text-align: center;
+    font-size: 64rpx;
+}

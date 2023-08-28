@@ -15,6 +15,8 @@ module.exports = {
         "pages/misc/misc": "./pages/misc/misc.ts",
         "pages/misc/bingo": "./pages/misc/bingo.ts",
         "pages/misc/ranking": "./pages/misc/ranking.ts",
+        "pages/wingo/wingo": "./pages/wingo/wingo.ts",
+        "pages/wingo/wingo-drag-item": "./pages/wingo/wingo-drag-item.ts",
     },
     output: {
         path: resolve("miniprogram_dist"),

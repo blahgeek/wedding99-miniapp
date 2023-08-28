@@ -1,0 +1,72 @@
+<page-meta scroll-top="{{pageMetaScrollTop}}"></page-meta>
+
+<wxs module="m">
+  var makeDummyDragItemData = function(s) {
+    return {
+        'dragId': s,
+        'inBoard': true,
+    };
+  };
+  module.exports = {
+    makeDummyDragItemData: makeDummyDragItemData,
+  };
+</wxs>
+
+<view wx:if="{{ state.isEditing }}" class="container">
+
+  <view class="help">
+    编辑中，长按并拖拽来向网格中填入形容词。
+    <a>查看详细规则</a>
+  </view>
+
+  <view class="action">
+    <button type="default" size="mini" bindtap="finishEdit">
+      完成编辑，开始Bingo!
+    </button>
+  </view>
+
+  <xp-drag
+      id="drag"
+      generic:item="drag-item"
+      bind:sortend="onSortEnd"
+      bind:scroll="scroll"
+      list-data="{{ dragListData }}"
+      scroll-top="{{ scrollTop }}"
+      extra-nodes="{{ dragExtraNodes }}"
+      columns="{{ 5 }}"
+      itemHeight="{{ 128 }}"
+      >
+    <view class="drag-separator" slot="drag-separator-0">
+      候选词：
+    </view>
+  </xp-drag>
+</view>
+
+<view wx:else class="container">
+
+  <view class="help">
+    点击选中新郎新娘公布的词语，任意行/列/对角集满获胜。
+    <a>查看详细规则</a>
+  </view>
+
+  <view class="action">
+    <button type="warn" plain="true" size="mini" bindtap="reset">
+      重新开始
+    </button>
+  </view>
+
+  <view class="board">
+    <view wx:for="{{ inBoardWords }}" wx:key="{{ item }}"
+          class="{{ state.activeMap[item] ? 'board-cell board-cell-active' : 'board-cell'}}">
+      <drag-item
+          bind:click="onTapItem"
+          data-word="{{ item }}"
+          item-data="{{ m.makeDummyDragItemData(item) }}" />
+    </view>
+  </view>
+
+  <view wx:if="{{ hasBingo }}" class="bingo">
+    BINGO!
+  </view>
+
+</view>

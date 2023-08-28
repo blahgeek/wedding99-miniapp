@@ -1,0 +1,6 @@
+{
+    "navigationBarTitleText": "Word Bingo",
+    "usingComponents": {
+        "drag-item": "./wingo-drag-item"
+    }
+}

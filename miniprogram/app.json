@@ -8,7 +8,8 @@
     "pages/hunt/video_ad",
     "pages/misc/misc",
     "pages/misc/bingo",
-    "pages/misc/ranking"
+    "pages/misc/ranking",
+    "pages/wingo/wingo"
   ],
   "useExtendedLib": {
     "weui": true
@@ -23,7 +24,9 @@
     "l-icon": "third_party/lin-ui-0.9.13/icon/index",
     "l-grid": "third_party/lin-ui-0.9.13/grid/index",
     "l-grid-item": "third_party/lin-ui-0.9.13/grid-item/index",
-    "l-list": "third_party/lin-ui-0.9.13/list/index"
+    "l-list": "third_party/lin-ui-0.9.13/list/index",
+
+    "xp-drag": "third_party/wxp-ui/components/drag/index"
   },
   "window": {
     "backgroundTextStyle": "light",

@@ -1,0 +1,30 @@
+.item {
+    width: 128rpx;
+    height: 128rpx;
+    box-sizing: border-box;
+
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    /* line-height: 128rpx; */
+}
+
+.item.item-inboard {
+    border: 1rpx solid black;
+}
+
+.item.item-candidate .text {
+    border: 1rpx solid black;
+    border-radius: 18rpx;
+}
+
+.item .text {
+    padding: 0 10rpx;
+    text-align: center;
+    vertical-align: middle;
+    max-width: 100%;
+    max-height: 100%;
+    word-break: break-all;
+    overflow: hidden;
+}

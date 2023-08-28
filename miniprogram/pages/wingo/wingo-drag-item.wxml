@@ -1,0 +1,5 @@
+<view catchtap="itemClick" class="{{ itemData.inBoard ? 'item item-inboard' : 'item item-candidate' }}">
+  <view class="text">
+    {{ itemData.dragId }}
+  </view>
+</view>
