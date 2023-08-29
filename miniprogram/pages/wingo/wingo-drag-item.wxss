@@ -17,6 +17,7 @@
 .item.item-candidate .text {
     border: 1rpx solid black;
     border-radius: 18rpx;
+    max-width: 80%;
 }
 
 .item .text {

@@ -6,7 +6,7 @@ import { AppOption } from '../../utils/app_context';
 const app = getApp<AppOption>();
 
 const STORAGE_KEY = 'wingo_state';
-const DEBUG_WORDS = '坚定,刚正,倔强,勤勉,耿直,纯正,难堪,温和,谦恭,建议,正直,羞涩,骄横,勤劳,直爽,信心,善良,顽强,刚毅,敦厚,谦逊,坚决,勤俭,困窘,骄纵,羞答答,淳朴,豁达,坚韧,相信,和蔼,爽直,开朗,廉政,自信,无语,和气,害羞,谦虚,强悍,自谦,仁慈,勤恳,勇猛,灰溜溜,羞赧,狂妄,减震,窘迫,慈祥,淳厚,率直,窘态,谦和,刚强,刻苦,辛勤,坚忍,活跃,坚强,勤快,清廉,新年,憨直,正派,体贴,节约,老实,温存,刚直,勇敢';
+const DEBUG_WORDS = Array(40).fill(0).map((_, i) => `word-${i}`).join(',');
 
 function range(start: number, end: number): number[] {
   return Array(end - start).fill(0).map((_, i) => i + start);
