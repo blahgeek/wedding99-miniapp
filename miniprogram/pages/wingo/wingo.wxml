@@ -16,7 +16,6 @@
 
   <view class="help">
     编辑中，长按并拖拽来向网格中填入形容词。
-    <a>查看详细规则</a>
   </view>
 
   <view class="action">
@@ -46,7 +45,6 @@
 
   <view class="help">
     点击选中新郎新娘公布的词语，任意行/列/对角集满获胜。
-    <a>查看详细规则</a>
   </view>
 
   <view class="action">
