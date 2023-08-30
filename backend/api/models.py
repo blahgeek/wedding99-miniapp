@@ -38,4 +38,5 @@ class HuntScore(models.Model):
     openid = models.CharField(max_length=128, primary_key=True)
     name = models.CharField(max_length=64)
     score = models.IntegerField(default=0)
+    score_timestamp = models.IntegerField(default=0)
 
