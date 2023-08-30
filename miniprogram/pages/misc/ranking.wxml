@@ -1,13 +1,21 @@
+<wxs module="m">
+  var timestampToStr = function(t) {
+    var d = getDate(t * 1000);
+    return d.toLocaleString();
+  };
+  module.exports = { timestampToStr: timestampToStr };
+</wxs>
+
 <view class="container">
   <block wx:if="{{ htmlContent }}">
     <rich-text nodes="{{ htmlContent }}" />
   </block>
   <block wx:else>
     <view class="title">
-      姓名 : 完成任务数量
+      姓名 : 完成任务数量（完成时间）
     </view>
     <view class="item" wx:for="{{ ranking }}">
-      {{ item.name }} : {{ item.score }}
+      {{ item.name }} : {{ item.score }}，({{ m.timestampToStr(item.score_timestamp) }})
     </view>
   </block>
 </view>
