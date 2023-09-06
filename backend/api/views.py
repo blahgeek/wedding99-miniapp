@@ -26,7 +26,7 @@ from .wxclient import wechat_client
 from .models import RsvpResponse, HuntScore
 from .facepp import facepp_api, FaceppAPIError
 from .hunt_tasks import get_tasks as do_get_tasks
-from .ui_config import UI_CONFIGS
+from .ui_config import getUIConfig
 
 
 qiniu_auth = qiniu.Auth(QINIU_ACCESS_KEY, QINIU_SECRET_KEY)
@@ -59,7 +59,7 @@ def code2session(req):
 @sigcheck
 def global_config(_):
     return JsonResponse({
-        'uiConfig': UI_CONFIGS,
+        'uiConfig': getUIConfig(),
     })
 
 
