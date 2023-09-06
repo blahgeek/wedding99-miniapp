@@ -31,3 +31,7 @@ picker .weui-input {
 mp-cells > .weui-cells__group {
     margin-bottom: 80rpx;
 }
+
+.weui-form-preview__label.form-label-title {
+    width: 100%;
+}

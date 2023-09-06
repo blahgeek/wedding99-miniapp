@@ -2,7 +2,7 @@
   <view wx:if="{{ submitted }}" class="weui-form-preview">
     <view class="weui-form-preview__hd">
       <view class="weui-form-preview__item">
-        <view class="weui-form-preview__label">回执已提交</view>
+        <view class="weui-form-preview__label form-label-title">回执已提交</view>
       </view>
     </view>
     <view class="weui-form-preview__bd">
