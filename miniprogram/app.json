@@ -8,6 +8,7 @@
     "pages/hunt/video_ad",
     "pages/misc/misc",
     "pages/misc/ranking",
+    "pages/misc/crossword",
     "pages/wingo/wingo"
   ],
   "useExtendedLib": {

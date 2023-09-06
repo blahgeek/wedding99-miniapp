@@ -14,6 +14,7 @@ module.exports = {
         "pages/hunt/video_ad": "./pages/hunt/video_ad.ts",
         "pages/misc/misc": "./pages/misc/misc.ts",
         "pages/misc/ranking": "./pages/misc/ranking.ts",
+        "pages/misc/crossword": "./pages/misc/crossword.ts",
         "pages/wingo/wingo": "./pages/wingo/wingo.ts",
         "pages/wingo/wingo-drag-item": "./pages/wingo/wingo-drag-item.ts",
     },

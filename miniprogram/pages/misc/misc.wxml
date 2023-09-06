@@ -1,4 +1,5 @@
 <view class="container">
   <l-list title="任务排行榜" image="/images/top-rated.png" url="/pages/misc/ranking" />
+  <l-list title="Crossword Clues" image="/images/crossword.png" url="/pages/misc/crossword" />
   <l-list title="Bingo" image="/images/bingo.png" url="/pages/wingo/wingo" />
 </view>
