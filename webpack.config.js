@@ -33,6 +33,10 @@ module.exports = {
                 test: /\.(jpg|png)$/,
                 type: 'asset/inline'
             },
+            {
+                test: /\.html$/,
+                type: 'asset/source'
+            },
         ],
     },
     resolve: {
@@ -48,7 +52,7 @@ module.exports = {
                     from: "**/*",
                     to: "./",
                     globOptions: {
-                        ignore: ["**/*.js", "**/*.ts", "**/*.xcf", "**/import/*"],
+                        ignore: ["**/*.js", "**/*.ts", "**/*.html", "**/*.xcf", "**/import/*"],
                     },
                 },
                 {

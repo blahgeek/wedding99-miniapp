@@ -2,12 +2,14 @@ import 'miniprogram-api-typings';
 
 import { AppOption } from '../../utils/app_context';
 
+import defaultCrosswordHtml from './crossword.html';
+
 const app = getApp<AppOption>();
 
 Page({
   data: {
     uiConfig: {
-      crosswordContent: 'no data',
+      crosswordContent: defaultCrosswordHtml,
     },
   },
 
