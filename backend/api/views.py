@@ -112,19 +112,20 @@ def get_hunt_tasks(req: HttpRequest):
 @require_http_methods(['POST'])
 @sigcheck
 def hunt_score(req: HttpRequest):
-    openid = req.GET['openid']
+    return JsonResponse({})  # post-wedding
+    # openid = req.GET['openid']
 
-    request_body = json.loads(req.body)
-    name = request_body['name']
-    score = request_body['score']
+    # request_body = json.loads(req.body)
+    # name = request_body['name']
+    # score = request_body['score']
 
-    model, _ = HuntScore.objects.get_or_create(openid=openid)
-    model.name = name
-    if score > model.score or model.score_timestamp == 0:
-        model.score = score
-        model.score_timestamp = int(time.time())
-    model.save()
-    return JsonResponse(model_to_dict(model))
+    # model, _ = HuntScore.objects.get_or_create(openid=openid)
+    # model.name = name
+    # if score > model.score or model.score_timestamp == 0:
+    #     model.score = score
+    #     model.score_timestamp = int(time.time())
+    # model.save()
+    # return JsonResponse(model_to_dict(model))
 
 
 @require_http_methods(['GET'])

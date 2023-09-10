@@ -43,7 +43,7 @@ _DEFAULT_TASKS = [
     HuntTask(
         id='q_whoisshe',
         name='她是谁',
-        defaultLocked=True,
+        defaultLocked=False,
         taskDetail=QuestionTaskDetail(
             questionRichContent='''
             <h3>以下哪张是新娘小时候的照片？</h3>
@@ -63,7 +63,7 @@ _DEFAULT_TASKS = [
     HuntTask(
         id='q_ouyang',
         name='谁最帅',
-        defaultLocked=True,
+        defaultLocked=False,
         taskDetail=QuestionTaskDetail(
             questionRichContent='''
             <h3>以下哪一位是新娘最喜欢的明星？</h3>
@@ -78,7 +78,7 @@ _DEFAULT_TASKS = [
     HuntTask(
         id='q_whoishe',
         name='谁最帅2',
-        defaultLocked=True,
+        defaultLocked=False,
         taskDetail=QuestionTaskDetail(
             questionRichContent='''
             <h3>以下哪张是新郎小时候的照片？</h3>
@@ -101,7 +101,7 @@ _DEFAULT_EXTRA_TASKS = [
     HuntTask(
         id='q_howlong',
         name='How long',
-        defaultLocked=True,
+        defaultLocked=False,
         taskDetail=QuestionTaskDetail(
             questionRichContent='''
             <h3>新郎新娘从在一起到现在的时间最接近：</h3>
@@ -274,7 +274,7 @@ def get_tasks(openid: str, name: str) -> list[HuntTask]:
     except RsvpResponse.DoesNotExist:
         rsvp_name = ''
 
-    should_lockall = True  # TODO
+    should_lockall = False  # post-wedding
 
     rand = random.Random(openid)
 

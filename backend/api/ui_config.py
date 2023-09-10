@@ -16,4 +16,10 @@ def getUIConfig():
     random.shuffle(wingo_words)
     return {
         'wingoWords': ','.join(wingo_words),
+
+        # post day
+        'huntHtml': dedent('''
+        <p>在婚礼现场完成任务，完成最多的人有礼物噢！</p>
+        <p><i>任务现已默认解锁，不再更新排行榜，如需要上传的合照图片可联系新郎</i></p>
+        '''),
     }
